@@ -1,0 +1,5 @@
+This directory is used to store uploaded XLS files, and others in the future.  It was developed
+because the uploaded XLS files were too large to upload and process in < 30 seconds and within
+the memory limitations of typical hosting providers.  
+
+This directory must be writable by the web server so files can be saved temporarly in it.

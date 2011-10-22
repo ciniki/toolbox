@@ -1,0 +1,43 @@
+#
+# Description
+# -----------
+# This table stores excel spreadsheet data which will be dedup'd by marking
+# any potential rows based on matching criteria.
+#
+# Fields
+# ------
+# excel_id:			The link back to toolbox_excel table.
+# row:				The row number from the spreadsheet.
+# col:				The column number from the spreadsheet.
+#
+# type:				The type of data.  Currently only have header and text support.
+#
+#					0 - unknown
+#					1 - header
+#					2 - footer
+#					3 - text
+#					4 - integer
+#					5 - decimal
+#					6 - datetime
+#
+# status:			What status is the piece of data in.  This can be used to 
+#					find all rows that require user intervention.
+#
+#					0 - unknown
+#					1 - active (default status upon upload)
+#					2 - deleted/ignore (this row/col should be ignored on export)
+#					3 - keep for sure, user has selected this
+#
+# data:				The data.
+#
+create table toolbox_excel_data (
+	excel_id int not null,
+	row int not null,
+	col int not null,
+	type tinyint unsigned not null,
+	status tinyint unsigned not null,
+	data varchar(10000) not null,
+	primary key (excel_id, row, col),
+	index (status),
+	index (data)
+) ENGINE='InnoDB', COMMENT='v1.01';

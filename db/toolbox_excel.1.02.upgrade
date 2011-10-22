@@ -1,0 +1,5 @@
+#
+# This file will upgrade the database table businesses to version 1.02.
+#
+ALTER TABLE toolbox_excel ADD COLUMN cur_review_row int not null AFTER status;
+ALTER TABLE toolbox_excel COMMENT='v1.02';

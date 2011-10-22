@@ -1,0 +1,4 @@
+This module contains various functions that might be useful to a business, but
+don't as of creation have a need to be their own module.
+
+

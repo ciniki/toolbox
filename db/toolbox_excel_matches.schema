@@ -1,0 +1,37 @@
+#
+# Description
+# -----------
+# This table stores any duplicate cells found in the excel data.
+# The lesser of the two row numbers must be stored in row1.  This method
+# will on make the matches unique
+#
+# Fields
+# ------
+# excel_id:				The link back to toolbox_excel table.
+#
+# row1:					The lower number row in the match.
+# col1:					The column number for the lower row number match.
+# row2:					The high number row in the match.
+# col2:					The column number for the high row number match.
+#
+# match_status:			0 - unknown
+#						1 - user intervention required
+#						2 - done
+#
+# match_result:			0 - unknown
+#						10 - autoDedup full row duplicate
+#						11 - autoDedup all key fields duplicate
+#						12 - autoDedup field duplicate
+#						20 - user deleted row
+#						21 - user marked unique
+#
+create table toolbox_excel_matches (
+	excel_id int not null,	
+	row1 int not null,
+	col1 int not null,
+	row2 int not null,
+	col2 int not null,
+	match_status tinyint unsigned not null,
+	match_result tinyint unsigned not null,
+	primary key (excel_id, row1, col1, row2, col2)
+) ENGINE='InnoDB', COMMENT='v1.01';
