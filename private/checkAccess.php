@@ -27,7 +27,7 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
 		|| !isset($ciniki['session']['user'])
 		|| !isset($ciniki['session']['user']['id'])
 		|| $ciniki['session']['user']['id'] < 1 ) {
-		return array('stat'=>'fail', 'err'=>array('code'=>'58', 'msg'=>'User not authenticated'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'58', 'msg'=>'User not authenticated'));
 	}
 	
 	//
@@ -49,7 +49,7 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
 		. "AND type = 1 "		// This is a business owner
 		. "";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
-	$rsp = ciniki_core_dbRspQuery($ciniki, $strsql, 'businesses', 'perms', 'perm', array('stat'=>'fail', 'err'=>array('code'=>'59', 'msg'=>'Access denied')));
+	$rsp = ciniki_core_dbRspQuery($ciniki, $strsql, 'businesses', 'perms', 'perm', array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'59', 'msg'=>'Access denied')));
 	if( $rsp['stat'] != 'ok' ) {
 		return $rsp;
 	}
@@ -67,7 +67,7 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
 		$strsql = "SELECT id, business_id FROM toolbox_excel "
 			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 			. "AND id = '" . ciniki_core_dbQuote($ciniki, $excel_id) . "' ";
-		$rsp = ciniki_core_dbRspQuery($ciniki, $strsql, 'toolbox', 'files', 'file', array('stat'=>'fail', 'err'=>array('code'=>'61', 'msg'=>'Access denied')));
+		$rsp = ciniki_core_dbRspQuery($ciniki, $strsql, 'toolbox', 'files', 'file', array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'61', 'msg'=>'Access denied')));
 		if( $rsp['stat'] != 'ok' ) {
 			return $rsp;
 		}
@@ -85,6 +85,6 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
 	//
 	// By default fail
 	//
-	return array('stat'=>'fail', 'err'=>array('code'=>'60', 'msg'=>'Access denied'));
+	return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'60', 'msg'=>'Access denied'));
 }
 ?>

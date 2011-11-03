@@ -88,7 +88,7 @@ function ciniki_toolbox_excelNextMatch($ciniki) {
 		}
 	}
 	$strsql .= ")";
-	$rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'toolbox', 'matches', 'match', array('stat'=>'fail', 'err'=>array('code'=>'96', 'msg'=>'No matches found.')));
+	$rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'toolbox', 'matches', 'match', array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'96', 'msg'=>'No matches found.')));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}

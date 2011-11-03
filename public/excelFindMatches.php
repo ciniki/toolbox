@@ -49,7 +49,7 @@ function ciniki_toolbox_excelFindMatches($ciniki) {
 	//
 	$num_cols = count($args['columns']);
 	if( $num_cols < 1 ) {
-		return array('stat'=>'fail', 'err'=>array('code'=>'90', 'msg'=>'No columns specified.'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'90', 'msg'=>'No columns specified.'));
 	}
 
 	//

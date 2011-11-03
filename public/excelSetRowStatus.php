@@ -69,7 +69,7 @@ function ciniki_toolbox_excelSetRowStatus($ciniki) {
 			. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 			. "AND row = '" . ciniki_core_dbQuote($ciniki, $args['row']) . "'";
 	} else {
-		return array('stat'=>'fail', 'err'=>array('code'=>'406', 'msg'=>'Invalid status specified'));
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'406', 'msg'=>'Invalid status specified'));
 	}
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'toolbox');
