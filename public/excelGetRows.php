@@ -12,7 +12,7 @@
 // ---------
 // api_key:
 // auth_token:
-// excel_id:			The excel spread ID that was uploaded to toolbox_excels table.
+// excel_id:			The excel spread ID that was uploaded to ciniki_toolbox_excels table.
 // rows:				A comma delimited list of rows to fetch from the database.
 // 
 // Returns
@@ -60,7 +60,7 @@ function ciniki_toolbox_excelGetRows($ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashIDQuery2.php');
 	$strsql = "SELECT business_id, name, source_name "
-		. "FROM toolbox_excel "
+		. "FROM ciniki_toolbox_excel "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' ";
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'toolbox', 'excel');
@@ -75,7 +75,7 @@ function ciniki_toolbox_excelGetRows($ciniki) {
 	//
 	// Get the row information requested
 	//
-	$strsql = "SELECT row, col, data FROM toolbox_excel_data "
+	$strsql = "SELECT row, col, data FROM ciniki_toolbox_excel_data "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND row IN (" . ciniki_core_dbQuoteIDs($ciniki, $args['rows']) . ")"
 		. " ORDER BY row, col ";

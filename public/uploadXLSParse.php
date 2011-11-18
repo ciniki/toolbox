@@ -114,7 +114,7 @@ function ciniki_toolbox_uploadXLSParse($ciniki) {
 	$last_row = 0;
 	for($row = $args['start']; $row <= ($args['start'] + ($args['size']-1)) && $row <= $numRows; $row++) {
 		$data_cols = 0;
-		$strsql = "INSERT INTO toolbox_excel_data (excel_id, type, status, row, col, data) VALUES ";
+		$strsql = "INSERT INTO ciniki_toolbox_excel_data (excel_id, type, status, row, col, data) VALUES ";
 		for($col = 0; $col < $numCols; $col++) {
 			if( $col > 0 ) {
 				$strsql .= ",";

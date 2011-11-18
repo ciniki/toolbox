@@ -13,7 +13,7 @@
 // api_key:
 // auth_token:		
 // business_id:			The business ID the excel file is connected to.
-// excel_id:			The excel ID from the table toolbox_excel.
+// excel_id:			The excel ID from the table ciniki_toolbox_excel.
 //
 // Returns
 // -------
@@ -54,7 +54,7 @@ function ciniki_toolbox_excelGetStats($ciniki) {
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbCount.php');
 	$strsql = "SELECT status, COUNT(DISTINCT row) "
-		. "FROM toolbox_excel_data "
+		. "FROM ciniki_toolbox_excel_data "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "GROUP BY status ";
 	$rc = ciniki_core_dbCount($ciniki, $strsql, 'toolbox', 'excel');
@@ -72,7 +72,7 @@ function ciniki_toolbox_excelGetStats($ciniki) {
 	// Get the number of rows in matches
 	//
 	$strsql = "SELECT match_status, COUNT(DISTINCT row1) "
-		. "FROM toolbox_excel_matches "
+		. "FROM ciniki_toolbox_excel_matches "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "GROUP BY match_status ";
 	$rc = ciniki_core_dbCount($ciniki, $strsql, 'toolbox', 'excel');

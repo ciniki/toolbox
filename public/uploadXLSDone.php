@@ -67,7 +67,7 @@ function ciniki_toolbox_uploadXLSDone($ciniki) {
 	//
 	// Update the information in the database
 	//
-	$strsql = "UPDATE toolbox_excel SET status = 10 "
+	$strsql = "UPDATE ciniki_toolbox_excel SET status = 10 "
 		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 		. "AND id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');

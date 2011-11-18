@@ -11,9 +11,9 @@
 // ---------
 // api_key:
 // auth_token:
-// excel_id:			The excel spread ID that was uploaded to toolbox_excels table.
-// row1:				The row1 number to mark in the toolbox_excel_matches table.
-// row2:				The row2 number to mark in the toolbox_excel_matches table.
+// excel_id:			The excel spread ID that was uploaded to ciniki_toolbox_excels table.
+// row1:				The row1 number to mark in the ciniki_toolbox_excel_matches table.
+// row2:				The row2 number to mark in the ciniki_toolbox_excel_matches table.
 // 
 // Returns
 // -------
@@ -58,7 +58,7 @@ function ciniki_toolbox_excelDeleteMatchesOnRows($ciniki) {
 	//
 	// Mark any matches for this row as "handled"
 	//
-	$strsql = "UPDATE toolbox_excel_matches SET match_status = 2, match_result = 21 "
+	$strsql = "UPDATE ciniki_toolbox_excel_matches SET match_status = 2, match_result = 21 "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND row1 = '" . ciniki_core_dbQuote($ciniki, $args['row1']) . "' "
 		. "AND row2 = '" . ciniki_core_dbQuote($ciniki, $args['row2']) . "'";
@@ -72,7 +72,7 @@ function ciniki_toolbox_excelDeleteMatchesOnRows($ciniki) {
 	//
 	// Mark the row as "keep"
 	//
-	$strsql = "UPDATE toolbox_excel_data SET status = 3 "
+	$strsql = "UPDATE ciniki_toolbox_excel_data SET status = 3 "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND row = '" . ciniki_core_dbQuote($ciniki, $args['row']) . "'";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');

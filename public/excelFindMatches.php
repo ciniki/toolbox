@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will search the toolbox_excel_data table for rows which are duplicates,
+// This function will search the ciniki_toolbox_excel_data table for rows which are duplicates,
 // or contain duplicate information
 //
 // Info
@@ -11,7 +11,7 @@
 //
 // Arguments
 // ---------
-// excel_id: 			The upload excel file ID form the toolbox_excel table.
+// excel_id: 			The upload excel file ID form the ciniki_toolbox_excel table.
 // columns:				Use the comma delimited list of column numbers to determine as the columns which must match.
 //
 // Returns
@@ -59,14 +59,14 @@ function ciniki_toolbox_excelFindMatches($ciniki) {
 		$strsql = "SELECT y.row as m1_row, y.col as m1_col, y.data as m1_data "
 			. "FROM ( "
 				. "SELECT excel_id, col, data "
-				. "FROM toolbox_excel_data "
+				. "FROM ciniki_toolbox_excel_data "
 				. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 				. "AND col = '" . ciniki_core_dbQuote($ciniki, $args['columns'][0]) . "' "
 				. "AND data != '' "
 				. "GROUP BY excel_id, col, data "
 				. "HAVING COUNT(row) > 1 "
 				. "ORDER BY excel_id, row, col "
-			. ") x, toolbox_excel_data y "
+			. ") x, ciniki_toolbox_excel_data y "
 			. "WHERE y.excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 			. "AND y.col = '" . ciniki_core_dbQuote($ciniki, $args['columns'][0]) . "' "
 			. "AND x.data = y.data "
@@ -84,14 +84,14 @@ function ciniki_toolbox_excelFindMatches($ciniki) {
 			$strsql .= "$comma (SELECT y.row as m{$t}_row, y.col as m{$t}_col, y.data as m{$t}_data "
 				. "FROM ( "
 					. "SELECT excel_id, col, data "
-					. "FROM toolbox_excel_data "
+					. "FROM ciniki_toolbox_excel_data "
 					. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 					. "AND col = '" . ciniki_core_dbQuote($ciniki, $args['columns'][$i]) . "' "
 					. "AND data != '' "
 					. "GROUP BY excel_id, col, data "
 					. "HAVING COUNT(row) > 1 "
 					. "ORDER BY excel_id, row, col "
-				. ") x, toolbox_excel_data y "
+				. ") x, ciniki_toolbox_excel_data y "
 				. "WHERE y.excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 				. "AND y.col = '" . ciniki_core_dbQuote($ciniki, $args['columns'][$i]) . "' "
 				. "AND x.data = y.data "
@@ -120,7 +120,7 @@ function ciniki_toolbox_excelFindMatches($ciniki) {
 	}
 
 	//
-	// Query for the duplicates, and update the toolbox_excel_matches table
+	// Query for the duplicates, and update the ciniki_toolbox_excel_matches table
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuery.php');
 	$rc = ciniki_core_dbQuery($ciniki, $strsql, 'toolbox');
@@ -172,7 +172,7 @@ function ciniki_toolbox_excelFindMatches($ciniki) {
 
 		//
 		// Go through the stack and add a match for each row to the current result row.  This will
-		// add a row in toolbox_excel_matches for each combination of matches.  if 4 rows match
+		// add a row in ciniki_toolbox_excel_matches for each combination of matches.  if 4 rows match
 		// on the same fields, then there will be 6 entries added.
 		//
 		foreach($matches as $row) {
@@ -182,7 +182,7 @@ function ciniki_toolbox_excelFindMatches($ciniki) {
 			$dup = 0;
 			for($i=0;$i<$num_cols;$i++) {
 				$t=$i+1;
-				$strsql = "INSERT INTO toolbox_excel_matches (excel_id, row1, col1, row2, col2, match_status, match_result)"
+				$strsql = "INSERT INTO ciniki_toolbox_excel_matches (excel_id, row1, col1, row2, col2, match_status, match_result)"
 					. " VALUES "
 					. "('" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 					. ", '" . ciniki_core_dbQuote($ciniki, $row['row']["m{$t}_row"]) . "' "

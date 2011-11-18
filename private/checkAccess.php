@@ -43,7 +43,7 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
 	// Check the authenticated user is the business owner
 	// 
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
-	$strsql = "SELECT business_id, user_id FROM business_users "
+	$strsql = "SELECT business_id, user_id FROM ciniki_business_users "
 		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 		. "AND user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
 		. "AND type = 1 "		// This is a business owner
@@ -64,7 +64,7 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
 	// to the requested business_id
 	//
 	if( $excel_id > 0 ) {
-		$strsql = "SELECT id, business_id FROM toolbox_excel "
+		$strsql = "SELECT id, business_id FROM ciniki_toolbox_excel "
 			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 			. "AND id = '" . ciniki_core_dbQuote($ciniki, $excel_id) . "' ";
 		$rsp = ciniki_core_dbRspQuery($ciniki, $strsql, 'toolbox', 'files', 'file', array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'61', 'msg'=>'Access denied')));

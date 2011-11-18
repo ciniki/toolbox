@@ -11,7 +11,7 @@
 // ---------
 // api_key:
 // auth_token:
-// excel_id:			The excel spread ID that was uploaded to toolbox_excels table.
+// excel_id:			The excel spread ID that was uploaded to ciniki_toolbox_excels table.
 // row:					The row number of the cell to update.
 // col:					The col number of the cell to update.
 // data:				The string to put into the contents of the cell.
@@ -53,7 +53,7 @@ function ciniki_toolbox_excelUpdateCell($ciniki) {
 	//
 	// Mark the row delete in the excel_data
 	//
-	$strsql = "UPDATE toolbox_excel_data SET data = '" . ciniki_core_dbQuote($ciniki, $args['data']) . "' "
+	$strsql = "UPDATE ciniki_toolbox_excel_data SET data = '" . ciniki_core_dbQuote($ciniki, $args['data']) . "' "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND row = '" . ciniki_core_dbQuote($ciniki, $args['row']) . "' "
 		. "AND col = '" . ciniki_core_dbQuote($ciniki, $args['col']) . "'";

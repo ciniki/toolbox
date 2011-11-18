@@ -101,7 +101,7 @@ function ciniki_toolbox_uploadXLSDelete($ciniki) {
 	//
 	// Create a new upload entry in the database
 	//
-	$strsql = "INSERT INTO toolbox_excel (business_id, name, source_name, date_added, last_updated) VALUES ("
+	$strsql = "INSERT INTO ciniki_toolbox_excel (business_id, name, source_name, date_added, last_updated) VALUES ("
 		. "'" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 		. ", '" . ciniki_core_dbQuote($ciniki, $args['name']) . "' "
 		. ", '" . ciniki_core_dbQuote($ciniki, $_FILES['uploadfile']['name']) . "' "
@@ -160,7 +160,7 @@ function ciniki_toolbox_uploadXLSDelete($ciniki) {
 	$type = 3;
 	$last_row = 0;
 	for($row = $args['start']; $row <= ($args['start'] + $args['size']) && $row <= $numRows; $row++) {
-		$strsql = "INSERT INTO toolbox_excel_data (excel_id, type, status, row, col, data) VALUES ";
+		$strsql = "INSERT INTO ciniki_toolbox_excel_data (excel_id, type, status, row, col, data) VALUES ";
 		for($col = 0; $col < $numCols; $col++) {
 			if( $col > 0 ) {
 				$strsql .= ",";

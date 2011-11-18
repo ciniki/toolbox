@@ -12,7 +12,7 @@
 // ---------
 // api_key:
 // auth_token:
-// excel_id:			The excel spread ID that was uploaded to toolbox_excels table.
+// excel_id:			The excel spread ID that was uploaded to ciniki_toolbox_excels table.
 // 
 // Returns
 // -------
@@ -57,7 +57,7 @@ function ciniki_toolbox_excelReset($ciniki) {
 	//
 	// Remove the deleted/keep flags from all rows
 	//
-	$strsql = "UPDATE toolbox_excel_data SET status = 1 "
+	$strsql = "UPDATE ciniki_toolbox_excel_data SET status = 1 "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "";
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'toolbox');
@@ -69,7 +69,7 @@ function ciniki_toolbox_excelReset($ciniki) {
 	//
 	// Delete all matches for a file
 	//
-	$strsql = "DELETE FROM toolbox_excel_matches "
+	$strsql = "DELETE FROM ciniki_toolbox_excel_matches "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "";
 	$rc = ciniki_core_dbDelete($ciniki, $strsql, 'toolbox');
@@ -81,7 +81,7 @@ function ciniki_toolbox_excelReset($ciniki) {
 	//
 	// Update the position counter
 	//
-	$strsql = "UPDATE toolbox_excel SET cur_review_row = 0 "
+	$strsql = "UPDATE ciniki_toolbox_excel SET cur_review_row = 0 "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 		. "";

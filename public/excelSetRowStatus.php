@@ -13,8 +13,8 @@
 // ---------
 // api_key:
 // auth_token:
-// excel_id:			The excel spread ID that was uploaded to toolbox_excels table.
-// rows					The row number to mark deleted in the toolbox_excel_data table.
+// excel_id:			The excel spread ID that was uploaded to ciniki_toolbox_excels table.
+// rows					The row number to mark deleted in the ciniki_toolbox_excel_data table.
 // 
 // Returns
 // -------
@@ -61,11 +61,11 @@ function ciniki_toolbox_excelSetRowStatus($ciniki) {
 	// Mark the row delete in the excel_data
 	//
 	if( $args['status'] == 'delete' ) {
-		$strsql = "UPDATE toolbox_excel_data SET status = 2 "
+		$strsql = "UPDATE ciniki_toolbox_excel_data SET status = 2 "
 			. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 			. "AND row = '" . ciniki_core_dbQuote($ciniki, $args['row']) . "'";
 	} else if( $args['status'] == 'keep' ) {
-		$strsql = "UPDATE toolbox_excel_data SET status = 3 "
+		$strsql = "UPDATE ciniki_toolbox_excel_data SET status = 3 "
 			. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 			. "AND row = '" . ciniki_core_dbQuote($ciniki, $args['row']) . "'";
 	} else {

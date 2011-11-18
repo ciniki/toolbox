@@ -12,7 +12,7 @@
 // ---------
 // api_key:
 // auth_token:
-// excel_id:			The excel spread ID that was uploaded to toolbox_excels table.
+// excel_id:			The excel spread ID that was uploaded to ciniki_toolbox_excels table.
 // rows:				A comma delimited list of rows to fetch from the database.
 // 
 // Returns
@@ -53,7 +53,7 @@ function ciniki_toolbox_excelPositionGet($ciniki) {
 
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	$strsql = "SELECT id, cur_review_row "
-		. "FROM toolbox_excel "
+		. "FROM ciniki_toolbox_excel "
 		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 		. "AND id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "";

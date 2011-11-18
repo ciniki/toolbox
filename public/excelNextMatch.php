@@ -3,7 +3,7 @@
 // Description
 // -----------
 // This function will fetch the next row which has unresolved matches,
-// from the toolbox_excel_matches table.  
+// from the ciniki_toolbox_excel_matches table.  
 //
 // Info
 // ----
@@ -13,7 +13,7 @@
 // ---------
 // api_key:
 // auth_token:
-// excel_id:			The excel spread ID that was uploaded to toolbox_excels table.
+// excel_id:			The excel spread ID that was uploaded to ciniki_toolbox_excels table.
 // last_row:			(optional) This argument can be specified to walk the matches without changing anything.
 // 
 // Returns
@@ -64,7 +64,7 @@ function ciniki_toolbox_excelNextMatch($ciniki) {
 	// Load the match information
 	//
 	$strsql = "SELECT row1, col1, row2, col2, match_status, match_result "
-		. "FROM toolbox_excel_matches "
+		. "FROM ciniki_toolbox_excel_matches "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' ";
 	if( $args['status'] != 'any' ) {
 		$strsql .= "AND match_result < 10 ";
@@ -72,9 +72,9 @@ function ciniki_toolbox_excelNextMatch($ciniki) {
 	$strsql .= "AND row1 = (";
 
 	if( $args['direction'] == 'rev' ) {
-		$strsql .= "SELECT MAX(row1) FROM toolbox_excel_matches ";
+		$strsql .= "SELECT MAX(row1) FROM ciniki_toolbox_excel_matches ";
 	} else {
-		$strsql .= "SELECT MIN(row1) FROM toolbox_excel_matches ";
+		$strsql .= "SELECT MIN(row1) FROM ciniki_toolbox_excel_matches ";
 	}
 	$strsql .= "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' ";
 	if( $args['status'] != 'any' ) {
@@ -108,7 +108,7 @@ function ciniki_toolbox_excelNextMatch($ciniki) {
 	}
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuoteIDs.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashIDQuery2.php');
-	$strsql = "SELECT row, col, data, status FROM toolbox_excel_data "
+	$strsql = "SELECT row, col, data, status FROM ciniki_toolbox_excel_data "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND row IN (" . ciniki_core_dbQuoteIDs($ciniki, array_keys($rows)) . ") "
 		. "ORDER BY row, col ";

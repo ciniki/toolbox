@@ -3,7 +3,7 @@
 // Description
 // -----------
 // This function will accept a uploaded Excel file via POST
-// and will parse the Excel file into the table toolbox_excel_data.
+// and will parse the Excel file into the table ciniki_toolbox_excel_data.
 //
 // Info
 // ----
@@ -84,7 +84,7 @@ function ciniki_toolbox_uploadXLS($ciniki) {
 	//
 	// Create a new upload entry in the database
 	//
-	$strsql = "INSERT INTO toolbox_excel (business_id, name, source_name, date_added, last_updated) VALUES ("
+	$strsql = "INSERT INTO ciniki_toolbox_excel (business_id, name, source_name, date_added, last_updated) VALUES ("
 		. "'" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 		. ", '" . ciniki_core_dbQuote($ciniki, $args['name']) . "' "
 		. ", '" . ciniki_core_dbQuote($ciniki, $_FILES['uploadfile']['name']) . "' "
@@ -110,7 +110,7 @@ function ciniki_toolbox_uploadXLS($ciniki) {
 	//
 	// Update the information in the database
 	//
-	$strsql = "UPDATE toolbox_excel SET status = 1, cache_name = '" . ciniki_core_dbQuote($ciniki, "excel_" . $excel_id) . "' "
+	$strsql = "UPDATE ciniki_toolbox_excel SET status = 1, cache_name = '" . ciniki_core_dbQuote($ciniki, "excel_" . $excel_id) . "' "
 		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 		. "AND id = '" . ciniki_core_dbQuote($ciniki, $excel_id) . "' ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');

@@ -2,7 +2,7 @@
 //
 // Description
 // -----------
-// This function will generate an Excel file from the data in toolbox_excel_data;
+// This function will generate an Excel file from the data in ciniki_toolbox_excel_data;
 //
 // Info
 // ----
@@ -12,7 +12,7 @@
 // ---------
 // api_key:
 // auth_token:		
-// excel_id:			The excel ID from the table toolbox_excel;
+// excel_id:			The excel ID from the table ciniki_toolbox_excel;
 // deleted:				(optional) Can be set to 'only' - only return deleted rows, or 'include' to include in main export.
 //
 // Returns
@@ -47,7 +47,7 @@ function ciniki_toolbox_downloadCSV($ciniki) {
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	$strsql = "SELECT business_id, name, source_name "
-		. "FROM toolbox_excel "
+		. "FROM ciniki_toolbox_excel "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' ";
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'toolbox', 'excel');
@@ -63,7 +63,7 @@ function ciniki_toolbox_downloadCSV($ciniki) {
 	// Open Excel parsing library
 	//
 
-	$strsql = "SELECT row, col, data FROM toolbox_excel_data "
+	$strsql = "SELECT row, col, data FROM ciniki_toolbox_excel_data "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' ";
 	if( isset($args['deleted']) && $args['deleted'] == 'only' ) {
 		$strsql .= "AND (status = 2 OR row = 1) ";

@@ -12,7 +12,7 @@
 // ---------
 // api_key:
 // auth_token:
-// excel_id:			The excel spread ID that was uploaded to toolbox_excels table.
+// excel_id:			The excel spread ID that was uploaded to ciniki_toolbox_excels table.
 // rows:				A comma delimited list of rows to fetch from the database.
 // 
 // Returns
@@ -56,7 +56,7 @@ function ciniki_toolbox_excelPositionSet($ciniki) {
 	// Update the current position
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
-	$strsql = "UPDATE toolbox_excel SET cur_review_row = '" . $args['row'] . "' "
+	$strsql = "UPDATE ciniki_toolbox_excel SET cur_review_row = '" . $args['row'] . "' "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' ";
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'toolbox');

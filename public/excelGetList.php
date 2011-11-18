@@ -49,7 +49,7 @@ function ciniki_toolbox_excelGetList($ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashIDQuery2.php');
 	$strsql = "SELECT id, name, source_name, cur_review_row, date_added "
-		. "FROM toolbox_excel "
+		. "FROM ciniki_toolbox_excel "
 		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 		. "AND status = 10 ";
 	return ciniki_core_dbRspQuery($ciniki, $strsql, 'toolbox', 'files', 'excel', array('stat'=>'ok', 'files'=>array()));
