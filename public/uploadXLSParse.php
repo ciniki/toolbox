@@ -50,7 +50,7 @@ function ciniki_toolbox_uploadXLSParse($ciniki) {
 	//
 	// Setup memory limits to be able to process large files
 	//
-	ini_set('memory_limit', '1024M');
+	ini_set('memory_limit', '4096M');
 
 	//
 	// Open Excel parsing library
@@ -94,6 +94,8 @@ function ciniki_toolbox_uploadXLSParse($ciniki) {
 		$objReader = PHPExcel_IOFactory::createReader($inputFileType);
 		/**  Tell the Reader that we want to use the Read Filter that we've Instantiated  **/ 
 		$objReader->setReadFilter($filterSubset); 
+		// Only read in the data, don't care about formatting
+		$objReader->setReadDataOnly(true);
 		/**  Load only the rows and columns that match our filter from $inputFileName to a PHPExcel Object  **/
 		$objPHPExcel = $objReader->load($inputFileName);
 
