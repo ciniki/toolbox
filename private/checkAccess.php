@@ -31,6 +31,22 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
 	}
 	
 	//
+	// Check if the module is enabled for this business, don't really care about the ruleset
+	//
+	$strsql = "SELECT ruleset FROM ciniki_businesses, ciniki_business_modules "
+		. "WHERE ciniki_businesses.id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+		. "AND ciniki_businesses.status = 1 "														// Business is active
+		. "AND ciniki_businesses.id = ciniki_business_modules.business_id "
+		. "AND ciniki_business_modules.package = 'ciniki' "
+		. "AND ciniki_business_modules.module = 'toolbox' "
+		. "";
+	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'businesses', 'module');
+	if( $rc['stat'] != 'ok' ) {
+		return $rc;
+	}
+
+	//
 	// Check the user has permission to the business, 
 	// owners have full permissions, as do sysadmins
 	//
