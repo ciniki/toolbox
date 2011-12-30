@@ -19,17 +19,6 @@
 // <rsp stat='ok' />
 //
 function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
-
-	//
-	// Check the user is authenticated
-	//
-	if( !isset($ciniki['session'])
-		|| !isset($ciniki['session']['user'])
-		|| !isset($ciniki['session']['user']['id'])
-		|| $ciniki['session']['user']['id'] < 1 ) {
-		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'58', 'msg'=>'User not authenticated'));
-	}
-	
 	//
 	// Check if the module is enabled for this business, don't really care about the ruleset
 	//
@@ -43,7 +32,7 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'businesses', 'module');
 	if( $rc['stat'] != 'ok' ) {
-		return $rc;
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'65', 'msg'=>'Access denied', 'err'=>$rc['err']));
 	}
 
 	//
@@ -62,17 +51,16 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
 	$strsql = "SELECT business_id, user_id FROM ciniki_business_users "
 		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 		. "AND user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
-		. "AND type = 1 "		// This is a business owner
+		. "AND package = 'ciniki' "
+		. "AND (permission_group = 'owners' OR permission_group = 'employees') "
 		. "";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
-	$rsp = ciniki_core_dbRspQuery($ciniki, $strsql, 'businesses', 'perms', 'perm', array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'59', 'msg'=>'Access denied')));
-	if( $rsp['stat'] != 'ok' ) {
-		return $rsp;
+	$rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'businesses', 'perms', 'perm', array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'59', 'msg'=>'Access denied')));
+	if( $rc['stat'] != 'ok' ) {
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'63', 'msg'=>'Access denied', 'err'=>$rc['err']));
 	}
-	if( $rsp['num_rows'] == 1 
-		&& $rsp['perms'][0]['perm']['business_id'] == $business_id
-		&& $rsp['perms'][0]['perm']['user_id'] == $ciniki['session']['user']['id'] ) {
-		return array('stat'=>'ok');
+	if( $rc['num_rows'] <= 0 ) {
+		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'64', 'msg'=>'Access denied'));
 	}
 
 	//
@@ -83,24 +71,24 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
 		$strsql = "SELECT id, business_id FROM ciniki_toolbox_excel "
 			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 			. "AND id = '" . ciniki_core_dbQuote($ciniki, $excel_id) . "' ";
-		$rsp = ciniki_core_dbRspQuery($ciniki, $strsql, 'toolbox', 'files', 'file', array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'61', 'msg'=>'Access denied')));
-		if( $rsp['stat'] != 'ok' ) {
-			return $rsp;
+		$rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'toolbox', 'files', 'file', array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'61', 'msg'=>'Access denied')));
+		if( $rc['stat'] != 'ok' ) {
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'67', 'msg'=>'Access denied', 'err'=>$rc['err']));
 		}
 		//
 		// Check that the file returned has the same credientials, and that only 
 		// 1 file was returned.
 		//
-		if( $rsp['num_rows'] == 1 
-			&& $rsp['files'][0]['file']['business_id'] == $business_id
-			&& $rsp['files'][0]['file']['id'] == $excel_id ) {
-			return array('stat'=>'ok');
+		if( $rc['num_rows'] != 1 
+			&& $rc['files'][0]['file']['business_id'] == $business_id
+			&& $rc['files'][0]['file']['id'] == $excel_id ) {
+			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'60', 'msg'=>'Access denied'));
 		}
 	}
-
+	
 	//
-	// By default fail
+	// All check cleared, grant access
 	//
-	return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'60', 'msg'=>'Access denied'));
+	return array('stat'=>'ok');
 }
 ?>
