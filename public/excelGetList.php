@@ -42,13 +42,21 @@ function ciniki_toolbox_excelGetList($ciniki) {
 		return $ac;
 	}
 
+	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/timezoneOffset.php');
+	$utc_offset = ciniki_users_timezoneOffset($ciniki);
+
+	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
+	require_once($ciniki['config']['core']['modules_dir'] . '/users/private/datetimeFormat.php');
+	$datetime_format = ciniki_users_datetimeFormat($ciniki);
+
 	//
 	// Load the excel information
 	//
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashQuery.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashIDQuery2.php');
-	$strsql = "SELECT id, name, source_name, cur_review_row, date_added "
+	$strsql = "SELECT id, name, source_name, cur_review_row, "
+		. "DATE_FORMAT(CONVERT_TZ(date_added, '+00:00', '" . ciniki_core_dbQuote($ciniki, $utc_offset) . "'), '" . ciniki_core_dbQuote($ciniki, $datetime_format) . "') AS date_added "
 		. "FROM ciniki_toolbox_excel "
 		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 		. "AND status = 10 ";
