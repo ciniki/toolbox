@@ -25,6 +25,7 @@ function ciniki_toolbox_download2XLS($ciniki) {
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
 		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No spreadsheet specified'), 
+		'status'=>array('required'=>'no', 'blank'=>'no', 'errmsg'=>'No status specified'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -73,8 +74,12 @@ function ciniki_toolbox_download2XLS($ciniki) {
 
 	$strsql = "SELECT row, col, data FROM ciniki_toolbox_excel_data "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
-		. "AND status = 1 "
-		. "ORDER BY row, col ";
+		. "";
+	if( isset($args['status']) && $args['status'] > 0 ) {
+		$strsql .= "AND status = 1 ";
+	}
+
+	$strsql .= "ORDER BY row, col ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuery.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbFetchHashRow.php');
 	$rc = ciniki_core_dbQuery($ciniki, $strsql, 'toolbox');
