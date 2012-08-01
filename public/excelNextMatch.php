@@ -88,7 +88,7 @@ function ciniki_toolbox_excelNextMatch($ciniki) {
 		}
 	}
 	$strsql .= ")";
-	$rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'toolbox', 'matches', 'match', array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'96', 'msg'=>'No matches found.')));
+	$rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.toolbox', 'matches', 'match', array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'96', 'msg'=>'No matches found.')));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -112,7 +112,7 @@ function ciniki_toolbox_excelNextMatch($ciniki) {
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND row IN (" . ciniki_core_dbQuoteIDs($ciniki, array_keys($rows)) . ") "
 		. "ORDER BY row, col ";
-	$rc = ciniki_core_dbHashIDQuery2($ciniki, $strsql, 'toolbox', 'rows', 'row', 'cells', 'cell');
+	$rc = ciniki_core_dbHashIDQuery2($ciniki, $strsql, 'ciniki.toolbox', 'rows', 'row', 'cells', 'cell');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}

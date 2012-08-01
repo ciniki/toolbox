@@ -50,7 +50,7 @@ function ciniki_toolbox_excelDeleteMatchesOnRows($ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionStart.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionRollback.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
-	$rc = ciniki_core_dbTransactionStart($ciniki, 'toolbox');
+	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -63,9 +63,9 @@ function ciniki_toolbox_excelDeleteMatchesOnRows($ciniki) {
 		. "AND row1 = '" . ciniki_core_dbQuote($ciniki, $args['row1']) . "' "
 		. "AND row2 = '" . ciniki_core_dbQuote($ciniki, $args['row2']) . "'";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
-	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'toolbox');
+	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'toolbox');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.toolbox');
 		return $rc;
 	}
 
@@ -76,20 +76,26 @@ function ciniki_toolbox_excelDeleteMatchesOnRows($ciniki) {
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND row = '" . ciniki_core_dbQuote($ciniki, $args['row']) . "'";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
-	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'toolbox');
+	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'toolbox');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.toolbox');
 		return $rc;
 	}
-
 
 	//
 	// Commit the changes
 	//
-	$rc = ciniki_core_dbTransactionCommit($ciniki, 'toolbox');
+	$rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
+
+	//
+	// Update the last_change date in the business modules
+	// Ignore the result, as we don't want to stop user updates if this fails.
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
+	ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'toolbox');
 
 	return array('stat'=>'ok');
 }

@@ -53,7 +53,7 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
 		. "AND (permission_group = 'owners' OR permission_group = 'employees') "
 		. "";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
-	$rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'businesses', 'perms', 'perm', array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'59', 'msg'=>'Access denied')));
+	$rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.businesses', 'perms', 'perm', array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'59', 'msg'=>'Access denied')));
 	if( $rc['stat'] != 'ok' ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'63', 'msg'=>'Access denied', 'err'=>$rc['err']));
 	}
@@ -69,7 +69,7 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
 		$strsql = "SELECT id, business_id FROM ciniki_toolbox_excel "
 			. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 			. "AND id = '" . ciniki_core_dbQuote($ciniki, $excel_id) . "' ";
-		$rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'toolbox', 'files', 'file', array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'61', 'msg'=>'Access denied')));
+		$rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.toolbox', 'files', 'file', array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'61', 'msg'=>'Access denied')));
 		if( $rc['stat'] != 'ok' ) {
 			return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'67', 'msg'=>'Access denied', 'err'=>$rc['err']));
 		}

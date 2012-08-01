@@ -66,7 +66,7 @@ function ciniki_toolbox_uploadXLSParse($ciniki) {
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionStart.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionRollback.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
-	$rc = ciniki_core_dbTransactionStart($ciniki, 'toolbox');
+	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -104,7 +104,7 @@ function ciniki_toolbox_uploadXLSParse($ciniki) {
 		$highestColumn = $objWorksheet->getHighestColumn(); // e.g 'F'
 		$numCols = PHPExcel_Cell::columnIndexFromString($highestColumn); 
 	} catch(Exception $e) {
-		ciniki_core_dbTransactionRollback($ciniki, 'toolbox');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.toolbox');
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'89', 'msg'=>'Unable to understand spreadsheet data'));
 	}
 
@@ -137,9 +137,9 @@ function ciniki_toolbox_uploadXLSParse($ciniki) {
 		// Only insert rows which have at least one column of data
 		//
 		if( $data_cols > 0 ) {
-			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'toolbox');
+			$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.toolbox');
 			if( $rc['stat'] != 'ok' ) {
-				ciniki_core_dbTransactionRollback($ciniki, 'toolbox');
+				ciniki_core_dbTransactionRollback($ciniki, 'ciniki.toolbox');
 				return $rc;
 			}
 			unset($rc);
@@ -147,10 +147,17 @@ function ciniki_toolbox_uploadXLSParse($ciniki) {
 		$last_row = $row;
 	}
 
-	$rc = ciniki_core_dbTransactionCommit($ciniki, 'toolbox');
+	$rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
+
+	//
+	// Update the last_change date in the business modules
+	// Ignore the result, as we don't want to stop user updates if this fails.
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
+	ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'toolbox');
 
 	return array('stat'=>'ok', 'id'=>$args['excel_id'], 'last_row'=>$last_row, 'rows'=>$numRows);
 }

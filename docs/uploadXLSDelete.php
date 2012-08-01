@@ -88,7 +88,7 @@ function ciniki_toolbox_uploadXLSDelete($ciniki) {
 	//
 	// Load the excel information from the database
 	//
-	$strsql = "SELECT cache_name, status FROM
+//	$strsql = "SELECT cache_name, status FROM
 
 	//
 	// Parse the specified selection of rows

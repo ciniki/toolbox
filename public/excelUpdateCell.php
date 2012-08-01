@@ -58,10 +58,17 @@ function ciniki_toolbox_excelUpdateCell($ciniki) {
 		. "AND row = '" . ciniki_core_dbQuote($ciniki, $args['row']) . "' "
 		. "AND col = '" . ciniki_core_dbQuote($ciniki, $args['col']) . "'";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
-	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'toolbox');
+	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
+
+	//
+	// Update the last_change date in the business modules
+	// Ignore the result, as we don't want to stop user updates if this fails.
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
+	ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'toolbox');
 
 	return array('stat'=>'ok');
 }

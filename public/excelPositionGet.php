@@ -57,7 +57,7 @@ function ciniki_toolbox_excelPositionGet($ciniki) {
 		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 		. "AND id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "";
-	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'toolbox', 'file');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.toolbox', 'file');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}

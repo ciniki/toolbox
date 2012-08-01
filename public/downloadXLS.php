@@ -49,7 +49,7 @@ function ciniki_toolbox_downloadXLS($ciniki) {
 		. "FROM ciniki_toolbox_excel "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' ";
-	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'toolbox', 'excel');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.toolbox', 'excel');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -73,7 +73,7 @@ function ciniki_toolbox_downloadXLS($ciniki) {
 	$strsql .= "ORDER BY row, col ";
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuery.php');
 	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbFetchHashRow.php');
-	$rc = ciniki_core_dbQuery($ciniki, $strsql, 'toolbox');
+	$rc = ciniki_core_dbQuery($ciniki, $strsql, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}

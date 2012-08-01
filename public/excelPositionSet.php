@@ -59,12 +59,19 @@ function ciniki_toolbox_excelPositionSet($ciniki) {
 	$strsql = "UPDATE ciniki_toolbox_excel SET cur_review_row = '" . $args['row'] . "' "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' ";
-	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'toolbox');
+	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'toolbox');
+		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.toolbox');
 		return $rc;
 	}
 	
+	//
+	// Update the last_change date in the business modules
+	// Ignore the result, as we don't want to stop user updates if this fails.
+	//
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
+	ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'toolbox');
+
 	return array('stat'=>'ok');
 }
 ?>

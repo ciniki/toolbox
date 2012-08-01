@@ -57,7 +57,7 @@ function ciniki_toolbox_excelGetStats($ciniki) {
 		. "FROM ciniki_toolbox_excel_data "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "GROUP BY status ";
-	$rc = ciniki_core_dbCount($ciniki, $strsql, 'toolbox', 'excel');
+	$rc = ciniki_core_dbCount($ciniki, $strsql, 'ciniki.toolbox', 'excel');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -75,7 +75,7 @@ function ciniki_toolbox_excelGetStats($ciniki) {
 		. "FROM ciniki_toolbox_excel_matches "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "GROUP BY match_status ";
-	$rc = ciniki_core_dbCount($ciniki, $strsql, 'toolbox', 'excel');
+	$rc = ciniki_core_dbCount($ciniki, $strsql, 'ciniki.toolbox', 'excel');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}

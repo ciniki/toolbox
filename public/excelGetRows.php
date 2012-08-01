@@ -63,7 +63,7 @@ function ciniki_toolbox_excelGetRows($ciniki) {
 		. "FROM ciniki_toolbox_excel "
 		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' ";
-	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'toolbox', 'excel');
+	$rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.toolbox', 'excel');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
@@ -79,7 +79,7 @@ function ciniki_toolbox_excelGetRows($ciniki) {
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND row IN (" . ciniki_core_dbQuoteIDs($ciniki, $args['rows']) . ")"
 		. " ORDER BY row, col ";
-	$rc = ciniki_core_dbHashIDQuery2($ciniki, $strsql, 'toolbox', 'rows', 'row', 'cells', 'cell');
+	$rc = ciniki_core_dbHashIDQuery2($ciniki, $strsql, 'ciniki.toolbox', 'rows', 'row', 'cells', 'cell');
 	if( $rc['stat'] != 'ok' ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'104', 'msg'=>'A valid excel_id must be specified', 'err'=>$rc['err']));
 	}
