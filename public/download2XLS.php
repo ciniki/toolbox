@@ -21,7 +21,7 @@ function ciniki_toolbox_download2XLS($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/prepareArgs.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
 		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No spreadsheet specified'), 
@@ -36,7 +36,7 @@ function ciniki_toolbox_download2XLS($ciniki) {
 	//
 	// Check access to business_id
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/toolbox/private/checkAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'toolbox', 'private', 'checkAccess');
 	$ac = ciniki_toolbox_checkAccess($ciniki, $args['business_id'], 'ciniki.toolbox.download2XLS', $args['excel_id']);
 	if( $ac['stat'] != 'ok' ) {
 		return $ac;
@@ -85,8 +85,8 @@ function ciniki_toolbox_download2XLS($ciniki) {
 	}
 
 	$strsql .= "ORDER BY row, col ";
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuery.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbFetchHashRow.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuery');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbFetchHashRow');
 	$rc = ciniki_core_dbQuery($ciniki, $strsql, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

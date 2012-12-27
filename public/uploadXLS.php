@@ -24,7 +24,7 @@ function ciniki_toolbox_uploadXLS($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/prepareArgs.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
 		'name'=>array('required'=>'no', 'default'=>'', 'blank'=>'yes', 'errmsg'=>'No name specified'), 
@@ -37,7 +37,7 @@ function ciniki_toolbox_uploadXLS($ciniki) {
 	//
 	// Check access to business_id
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/toolbox/private/checkAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'toolbox', 'private', 'checkAccess');
 	$ac = ciniki_toolbox_checkAccess($ciniki, $args['business_id'], 'ciniki.toolbox.uploadXLS', 0);
 	if( $ac['stat'] != 'ok' ) {
 		return $ac;
@@ -73,9 +73,9 @@ function ciniki_toolbox_uploadXLS($ciniki) {
 	//
 	// Turn off autocommit
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionStart.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionRollback.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionStart');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionRollback');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionCommit');
 	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -89,7 +89,7 @@ function ciniki_toolbox_uploadXLS($ciniki) {
 		. ", '" . ciniki_core_dbQuote($ciniki, $args['name']) . "' "
 		. ", '" . ciniki_core_dbQuote($ciniki, $_FILES['uploadfile']['name']) . "' "
 		. ", UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbInsert.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
 	$rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.toolbox');
@@ -113,7 +113,7 @@ function ciniki_toolbox_uploadXLS($ciniki) {
 	$strsql = "UPDATE ciniki_toolbox_excel SET status = 1, cache_name = '" . ciniki_core_dbQuote($ciniki, "excel_" . $excel_id) . "' "
 		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
 		. "AND id = '" . ciniki_core_dbQuote($ciniki, $excel_id) . "' ";
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbUpdate.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
 		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.toolbox');

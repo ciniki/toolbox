@@ -38,7 +38,7 @@ function ciniki_toolbox_excelNextMatch($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/prepareArgs.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
 		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No spreadsheet specified'), 
@@ -54,7 +54,7 @@ function ciniki_toolbox_excelNextMatch($ciniki) {
 	//
 	// Check access to business_id
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/toolbox/private/checkAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'toolbox', 'private', 'checkAccess');
 	$ac = ciniki_toolbox_checkAccess($ciniki, $args['business_id'], 'ciniki.toolbox.excelNextMatch', $args['excel_id']);
 	if( $ac['stat'] != 'ok' ) {
 		return $ac;
@@ -106,8 +106,8 @@ function ciniki_toolbox_excelNextMatch($ciniki) {
 		$rows[$match['match']['row1']] = 1;
 		$rows[$match['match']['row2']] = 1;
 	}
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuoteIDs.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbHashIDQuery2.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuoteIDs');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashIDQuery2');
 	$strsql = "SELECT row, col, data, status FROM ciniki_toolbox_excel_data "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
 		. "AND row IN (" . ciniki_core_dbQuoteIDs($ciniki, array_keys($rows)) . ") "

@@ -22,7 +22,7 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
 	//
 	// Check if the business is active and the module is enabled
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/businesses/private/checkModuleAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'checkModuleAccess');
 	$rc = ciniki_businesses_checkModuleAccess($ciniki, $business_id, 'ciniki', 'toolbox');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -45,14 +45,14 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
 	//
 	// Check the authenticated user is the business owner
 	// 
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuote.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
 	$strsql = "SELECT business_id, user_id FROM ciniki_business_users "
 		. "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
 		. "AND user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
 		. "AND package = 'ciniki' "
 		. "AND (permission_group = 'owners' OR permission_group = 'employees') "
 		. "";
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbRspQuery.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbRspQuery');
 	$rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.businesses', 'perms', 'perm', array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'59', 'msg'=>'Access denied')));
 	if( $rc['stat'] != 'ok' ) {
 		return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'63', 'msg'=>'Access denied', 'err'=>$rc['err']));

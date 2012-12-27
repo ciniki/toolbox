@@ -22,7 +22,7 @@ function ciniki_toolbox_excelFindMatches($ciniki) {
 	//
 	// Find all the required and optional arguments
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/prepareArgs.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
 		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
 		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No spreadsheet specified'), 
@@ -38,7 +38,7 @@ function ciniki_toolbox_excelFindMatches($ciniki) {
 	// Check access to business_id, the toolbox module is turned on, the user has access, 
 	// and the excel_id belongs to the business.
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/toolbox/private/checkAccess.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'toolbox', 'private', 'checkAccess');
 	$ac = ciniki_toolbox_checkAccess($ciniki, $args['business_id'], 'ciniki.toolbox.excelFindMatches', $args['excel_id']);
 	if( $ac['stat'] != 'ok' ) {
 		return $ac;
@@ -111,9 +111,9 @@ function ciniki_toolbox_excelFindMatches($ciniki) {
 	//
 	// Turn off autocommit
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionStart.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionRollback.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbTransactionCommit.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionStart');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionRollback');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionCommit');
 	$rc = ciniki_core_dbTransactionStart($ciniki, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
@@ -122,15 +122,15 @@ function ciniki_toolbox_excelFindMatches($ciniki) {
 	//
 	// Query for the duplicates, and update the ciniki_toolbox_excel_matches table
 	//
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbQuery.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuery');
 	$rc = ciniki_core_dbQuery($ciniki, $strsql, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
 	}
 
 	$result_handle = $rc['handle'];
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbFetchHashRow.php');
-	require_once($ciniki['config']['core']['modules_dir'] . '/core/private/dbInsert.php');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbFetchHashRow');
+	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
 	$num_matches = 0;
 	$num_dups = 0;
 	$prev_result = ciniki_core_dbFetchHashRow($ciniki, $result_handle);
