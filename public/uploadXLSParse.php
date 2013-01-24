@@ -52,6 +52,7 @@ function ciniki_toolbox_uploadXLSParse($ciniki) {
 	//
 	ini_set('memory_limit', '4096M');
 
+	error_log("Parsing chunk: " . $args['start'] . ' - ' . $args['size']);
 	//
 	// Open Excel parsing library
 	//
@@ -114,6 +115,7 @@ function ciniki_toolbox_uploadXLSParse($ciniki) {
 	//
 	$type = 3;
 	$last_row = 0;
+	$count = 0;
 	for($row = $args['start']; $row <= ($args['start'] + ($args['size']-1)) && $row <= $numRows; $row++) {
 		$data_cols = 0;
 		$strsql = "INSERT INTO ciniki_toolbox_excel_data (excel_id, type, status, row, col, data) VALUES ";
@@ -145,6 +147,7 @@ function ciniki_toolbox_uploadXLSParse($ciniki) {
 			unset($rc);
 		}
 		$last_row = $row;
+		$count++;
 	}
 
 	$rc = ciniki_core_dbTransactionCommit($ciniki, 'ciniki.toolbox');
@@ -159,6 +162,6 @@ function ciniki_toolbox_uploadXLSParse($ciniki) {
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
 	ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'toolbox');
 
-	return array('stat'=>'ok', 'id'=>$args['excel_id'], 'last_row'=>$last_row, 'rows'=>$numRows);
+	return array('stat'=>'ok', 'id'=>$args['excel_id'], 'last_row'=>$last_row, 'rows'=>$numRows, 'count'=>$count);
 }
 ?>
