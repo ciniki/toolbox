@@ -46,7 +46,7 @@ function ciniki_toolbox_uploadXLS($ciniki) {
 	//
 	// Setup memory limits to be able to process large files
 	//
-	ini_set("upload_max_filesize", "10M");
+	ini_set("upload_max_filesize", "50M");
 	ini_set('memory_limit', '4096M');
 
 
