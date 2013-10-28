@@ -40,11 +40,11 @@ function ciniki_toolbox_excelNextMatch($ciniki) {
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
-		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No spreadsheet specified'), 
-		'last_row'=>array('required'=>'no', 'default'=>'0', 'blank'=>'no', 'errmsg'=>'No rows specified'), 
-		'status'=>array('required'=>'no', 'default'=>'', 'blank'=>'Yes', 'errmsg'=>'No status specified'),
-		'direction'=>array('required'=>'no', 'default'=>'fwd', 'blank'=>'Yes', 'errmsg'=>'No status specified'),
+		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Spreadsheet'), 
+		'last_row'=>array('required'=>'no', 'default'=>'0', 'blank'=>'no', 'name'=>'Last Row'), 
+		'status'=>array('required'=>'no', 'default'=>'', 'blank'=>'Yes', 'name'=>'Status'),
+		'direction'=>array('required'=>'no', 'default'=>'fwd', 'blank'=>'Yes', 'name'=>'Status'),
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

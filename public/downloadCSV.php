@@ -24,9 +24,9 @@ function ciniki_toolbox_downloadCSV($ciniki) {
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
-		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No spreadsheet specified'), 
-		'deleted'=>array('required'=>'no', 'blank'=>'yes', 'errmsg'=>'No flags specified'), 
+		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Spreadsheet'), 
+		'deleted'=>array('required'=>'no', 'blank'=>'yes', 'name'=>'Flags'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

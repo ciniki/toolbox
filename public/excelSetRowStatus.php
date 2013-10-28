@@ -26,10 +26,10 @@ function ciniki_toolbox_excelSetRowStatus($ciniki) {
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
-		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No spreadsheet specified'), 
-		'row'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No row specified'), 
-		'status'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No row specified'), 
+		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Spreadsheet'), 
+		'row'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Row'), 
+		'status'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Status'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

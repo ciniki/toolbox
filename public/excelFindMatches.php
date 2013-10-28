@@ -24,10 +24,10 @@ function ciniki_toolbox_excelFindMatches($ciniki) {
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
-		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No spreadsheet specified'), 
-		'columns'=>array('required'=>'yes', 'type'=>'idlist', 'blank'=>'no', 'errmsg'=>'No row specified'), 
-		'match_blank'=>array('required'=>'no', 'default'=>'no', 'blank'=>'no', 'errmsg'=>'No match_blank specified'), 
+		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Spreadsheet'), 
+		'columns'=>array('required'=>'yes', 'type'=>'idlist', 'blank'=>'no', 'name'=>'Row'), 
+		'match_blank'=>array('required'=>'no', 'default'=>'no', 'blank'=>'no', 'name'=>'Match Blank Records'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

@@ -25,10 +25,10 @@ function ciniki_toolbox_excelDeleteMatchesOnRows($ciniki) {
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
-		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No spreadsheet specified'), 
-		'row1'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No row specified'), 
-		'row2'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No row specified'), 
+		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Spreadsheet'), 
+		'row1'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'First Row'), 
+		'row2'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Second Row'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;

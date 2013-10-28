@@ -23,9 +23,9 @@ function ciniki_toolbox_downloadXLS($ciniki) {
 	//
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
 	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
-		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No spreadsheet specified'), 
-		'status'=>array('required'=>'no', 'blank'=>'no', 'errmsg'=>'No spreadsheet specified'), 
+		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Spreadsheet'), 
+		'status'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Status'), 
 		));
 	if( $rc['stat'] != 'ok' ) {
 		return $rc;
