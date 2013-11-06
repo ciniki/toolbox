@@ -74,7 +74,7 @@ function ciniki_toolbox_excelDeleteMatchesOnRows($ciniki) {
 	//
 	$strsql = "UPDATE ciniki_toolbox_excel_data SET status = 3 "
 		. "WHERE excel_id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
-		. "AND row = '" . ciniki_core_dbQuote($ciniki, $args['row']) . "'";
+		. "AND row = '" . ciniki_core_dbQuote($ciniki, $args['row2']) . "'";
 	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
 	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.toolbox');
 	if( $rc['stat'] != 'ok' ) {
