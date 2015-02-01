@@ -296,25 +296,20 @@ function ciniki_toolbox_excel() {
 	//
 	this.downloadFile = function(s, l) {
 		if( s != null && s > 0 ) {
-			window.open(M.api.getUploadURL('ciniki.toolbox.download2XLS', 
-				{'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'status':s}));
+			M.api.openFile('ciniki.toolbox.download2XLS', 
+				{'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'status':s});
 		} else if( l != null && l != '' ) {
-			window.open(M.api.getUploadURL('ciniki.toolbox.download2XLS', 
-				{'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'status_list':l}));
+			M.api.openFile('ciniki.toolbox.download2XLS', 
+				{'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'status_list':l});
 		} else {
-			window.open(M.api.getUploadURL('ciniki.toolbox.download2XLS', 
-				{'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id}));
+			M.api.openFile('ciniki.toolbox.download2XLS', 
+				{'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id});
 		}
 	}
 
-//	this.download2File = function() {
-//		window.open(M.api.getUploadURL('ciniki.toolbox.download2XLS', 
-//			{'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id}));
-//	}
-	
 	this.downloadCSVFile = function(deleted) {
-		window.open(M.api.getUploadURL('ciniki.toolbox.downloadCSV', 
-			{'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'deleted':deleted}));
+		M.api.openFile('ciniki.toolbox.downloadCSV', 
+			{'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'deleted':deleted});
 	}
 	
 	//
