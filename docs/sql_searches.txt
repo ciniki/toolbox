@@ -1,43 +1,43 @@
 
  SELECT excel_id, row, col
  FROM (
-	 SELECT m1.excel_id as m1_excel_id, m1.row as m1_row, m1.col as m1_col, m1.data as m1_data, m1.ct as m1_count, 
-	 	m2.excel_id as m2_excel_id, m2.row as m2_row, m2.col as m2_col, m2.data as m2_data, m2.ct as m2_count
-	 FROM (
-		SELECT excel_id, row, col, data, COUNT(row) as ct
-		FROM toolbox_excel_data
-		WHERE excel_id = 14 AND col = 4 AND data != ''
-		GROUP BY excel_id, col, data
-		HAVING COUNT(row) > 1 
-		ORDER BY excel_id, row, col 
-		) m1, 
-	 (
-		SELECT excel_id, row, col, data, COUNT(row) as ct
-		FROM toolbox_excel_data
-		WHERE excel_id = 14 AND col = 5 AND data != ''
-		GROUP BY excel_id, col, data
-		HAVING COUNT(row) > 1 
-		ORDER BY excel_id, row, col 
-		) m2
-	WHERE m1.row = m2.row		
-	 ORDER BY m1.excel_id, m1.row, m1.col
-	) m3
+     SELECT m1.excel_id as m1_excel_id, m1.row as m1_row, m1.col as m1_col, m1.data as m1_data, m1.ct as m1_count, 
+        m2.excel_id as m2_excel_id, m2.row as m2_row, m2.col as m2_col, m2.data as m2_data, m2.ct as m2_count
+     FROM (
+        SELECT excel_id, row, col, data, COUNT(row) as ct
+        FROM toolbox_excel_data
+        WHERE excel_id = 14 AND col = 4 AND data != ''
+        GROUP BY excel_id, col, data
+        HAVING COUNT(row) > 1 
+        ORDER BY excel_id, row, col 
+        ) m1, 
+     (
+        SELECT excel_id, row, col, data, COUNT(row) as ct
+        FROM toolbox_excel_data
+        WHERE excel_id = 14 AND col = 5 AND data != ''
+        GROUP BY excel_id, col, data
+        HAVING COUNT(row) > 1 
+        ORDER BY excel_id, row, col 
+        ) m2
+    WHERE m1.row = m2.row       
+     ORDER BY m1.excel_id, m1.row, m1.col
+    ) m3
  WHERE m2
 
 //
 // Search 1 field
 //
-	SELECT y.row, y.col, y.data 
-	FROM (
-		SELECT excel_id, row, col, data, COUNT(row) as ct
-		FROM toolbox_excel_data
-		WHERE excel_id = 15 AND (col = 19) AND data != ''
-		GROUP BY excel_id, col, data
-		HAVING COUNT(row) > 1 
-		ORDER BY excel_id, row, col 
-		) x, toolbox_excel_data y
-	WHERE y.excel_id = 15 AND (y.col = 19) AND x.data = y.data
-	ORDER BY y.data
+    SELECT y.row, y.col, y.data 
+    FROM (
+        SELECT excel_id, row, col, data, COUNT(row) as ct
+        FROM toolbox_excel_data
+        WHERE excel_id = 15 AND (col = 19) AND data != ''
+        GROUP BY excel_id, col, data
+        HAVING COUNT(row) > 1 
+        ORDER BY excel_id, row, col 
+        ) x, toolbox_excel_data y
+    WHERE y.excel_id = 15 AND (y.col = 19) AND x.data = y.data
+    ORDER BY y.data
 
 //
 // CUR: Search 2 field
@@ -45,30 +45,30 @@
 
  SELECT *
  FROM (
-	SELECT y.row as yrow, y.col as ycol, y.data as ydata
-	FROM (
-		SELECT excel_id, row, col, data, COUNT(row) as ct
-		FROM toolbox_excel_data
-		WHERE excel_id = 15 AND (col = 4) AND data != ''
-		GROUP BY excel_id, col, data
-		HAVING COUNT(row) > 1 
-		ORDER BY excel_id, row, col 
-		) x, toolbox_excel_data y
-	WHERE y.excel_id = 15 AND (y.col = 4) AND x.data = y.data
-	ORDER BY x.row, x.col
+    SELECT y.row as yrow, y.col as ycol, y.data as ydata
+    FROM (
+        SELECT excel_id, row, col, data, COUNT(row) as ct
+        FROM toolbox_excel_data
+        WHERE excel_id = 15 AND (col = 4) AND data != ''
+        GROUP BY excel_id, col, data
+        HAVING COUNT(row) > 1 
+        ORDER BY excel_id, row, col 
+        ) x, toolbox_excel_data y
+    WHERE y.excel_id = 15 AND (y.col = 4) AND x.data = y.data
+    ORDER BY x.row, x.col
  ) m1,
  (
-	SELECT y.row as yrow, y.col as ycol, y.data as ydata
-	FROM (
-		SELECT excel_id, row, col, data, COUNT(row) as ct
-		FROM toolbox_excel_data
-		WHERE excel_id = 15 AND (col = 5) AND data != ''
-		GROUP BY excel_id, col, data
-		HAVING COUNT(row) > 1 
-		ORDER BY excel_id, row, col 
-		) x, toolbox_excel_data y
-	WHERE y.excel_id = 15 AND (y.col = 5) AND x.data = y.data
-	ORDER BY x.row, x.col
+    SELECT y.row as yrow, y.col as ycol, y.data as ydata
+    FROM (
+        SELECT excel_id, row, col, data, COUNT(row) as ct
+        FROM toolbox_excel_data
+        WHERE excel_id = 15 AND (col = 5) AND data != ''
+        GROUP BY excel_id, col, data
+        HAVING COUNT(row) > 1 
+        ORDER BY excel_id, row, col 
+        ) x, toolbox_excel_data y
+    WHERE y.excel_id = 15 AND (y.col = 5) AND x.data = y.data
+    ORDER BY x.row, x.col
  ) m2
  WHERE m1.yrow = m2.yrow
  ORDER BY m1.ydata, m2.ydata
@@ -79,43 +79,43 @@
 //
  SELECT *
  FROM (
-	SELECT y.row, y.col, y.data 
-	FROM (
-		SELECT excel_id, row, col, data, COUNT(row) as ct
-		FROM toolbox_excel_data
-		WHERE excel_id = 15 AND (col = 4) AND data != ''
-		GROUP BY excel_id, col, data
-		HAVING COUNT(row) > 1 
-		ORDER BY excel_id, row, col 
-		) x, toolbox_excel_data y
-	WHERE y.excel_id = 15 AND (y.col = 4) AND x.data = y.data
-	ORDER BY x.row, x.col
+    SELECT y.row, y.col, y.data 
+    FROM (
+        SELECT excel_id, row, col, data, COUNT(row) as ct
+        FROM toolbox_excel_data
+        WHERE excel_id = 15 AND (col = 4) AND data != ''
+        GROUP BY excel_id, col, data
+        HAVING COUNT(row) > 1 
+        ORDER BY excel_id, row, col 
+        ) x, toolbox_excel_data y
+    WHERE y.excel_id = 15 AND (y.col = 4) AND x.data = y.data
+    ORDER BY x.row, x.col
  ) m1,
  (
-	SELECT y.row, y.col, y.data 
-	FROM (
-		SELECT excel_id, row, col, data, COUNT(row) as ct
-		FROM toolbox_excel_data
-		WHERE excel_id = 15 AND (col = 5) AND data != ''
-		GROUP BY excel_id, col, data
-		HAVING COUNT(row) > 1 
-		ORDER BY excel_id, row, col 
-		) x, toolbox_excel_data y
-	WHERE y.excel_id = 15 AND (y.col = 5) AND x.data = y.data
-	ORDER BY x.row, x.col
+    SELECT y.row, y.col, y.data 
+    FROM (
+        SELECT excel_id, row, col, data, COUNT(row) as ct
+        FROM toolbox_excel_data
+        WHERE excel_id = 15 AND (col = 5) AND data != ''
+        GROUP BY excel_id, col, data
+        HAVING COUNT(row) > 1 
+        ORDER BY excel_id, row, col 
+        ) x, toolbox_excel_data y
+    WHERE y.excel_id = 15 AND (y.col = 5) AND x.data = y.data
+    ORDER BY x.row, x.col
  ) m2,
  (
-	SELECT y.row, y.col, y.data 
-	FROM (
-		SELECT excel_id, row, col, data, COUNT(row) as ct
-		FROM toolbox_excel_data
-		WHERE excel_id = 15 AND (col = 3) AND data != ''
-		GROUP BY excel_id, col, data
-		HAVING COUNT(row) > 1 
-		ORDER BY excel_id, row, col 
-		) x, toolbox_excel_data y
-	WHERE y.excel_id = 15 AND (y.col = 3) AND x.data = y.data
-	ORDER BY x.row, x.col
+    SELECT y.row, y.col, y.data 
+    FROM (
+        SELECT excel_id, row, col, data, COUNT(row) as ct
+        FROM toolbox_excel_data
+        WHERE excel_id = 15 AND (col = 3) AND data != ''
+        GROUP BY excel_id, col, data
+        HAVING COUNT(row) > 1 
+        ORDER BY excel_id, row, col 
+        ) x, toolbox_excel_data y
+    WHERE y.excel_id = 15 AND (y.col = 3) AND x.data = y.data
+    ORDER BY x.row, x.col
  ) m3
  WHERE m1.row = m2.row AND m2.row = m3.row
  ORDER BY m1.data, m2.data, m3.data
@@ -128,30 +128,30 @@
 
  SELECT m1.xrow, m1.xdata, m2.xdata, m1.yrow, m1.ydata, m2.ydata
  FROM (
-	SELECT x.row as xrow, x.col as xcol, x.data as xdata, x.ct as xct, y.row as yrow, y.col as ycol, y.data as ydata
-	FROM (
-		SELECT excel_id, row, col, data, COUNT(row) as ct
-		FROM toolbox_excel_data
-		WHERE excel_id = 15 AND (col = 4) AND data != ''
-		GROUP BY excel_id, col, data
-		HAVING COUNT(row) > 1 
-		ORDER BY excel_id, row, col 
-		) x, toolbox_excel_data y
-	WHERE y.excel_id = 15 AND x.row < y.row AND (y.col = 4) AND x.data = y.data
-	ORDER BY x.row, x.col
+    SELECT x.row as xrow, x.col as xcol, x.data as xdata, x.ct as xct, y.row as yrow, y.col as ycol, y.data as ydata
+    FROM (
+        SELECT excel_id, row, col, data, COUNT(row) as ct
+        FROM toolbox_excel_data
+        WHERE excel_id = 15 AND (col = 4) AND data != ''
+        GROUP BY excel_id, col, data
+        HAVING COUNT(row) > 1 
+        ORDER BY excel_id, row, col 
+        ) x, toolbox_excel_data y
+    WHERE y.excel_id = 15 AND x.row < y.row AND (y.col = 4) AND x.data = y.data
+    ORDER BY x.row, x.col
  ) m1,
  (
-	SELECT x.row as xrow, x.col as xcol, x.data as xdata, x.ct as xct, y.row as yrow, y.col as ycol, y.data as ydata
-	FROM (
-		SELECT excel_id, row, col, data, COUNT(row) as ct
-		FROM toolbox_excel_data
-		WHERE excel_id = 15 AND (col = 5) AND data != ''
-		GROUP BY excel_id, col, data
-		HAVING COUNT(row) > 1 
-		ORDER BY excel_id, row, col 
-		) x, toolbox_excel_data y
-	WHERE y.excel_id = 15 AND x.row < y.row AND (y.col = 5) AND x.data = y.data
-	ORDER BY x.row, x.col
+    SELECT x.row as xrow, x.col as xcol, x.data as xdata, x.ct as xct, y.row as yrow, y.col as ycol, y.data as ydata
+    FROM (
+        SELECT excel_id, row, col, data, COUNT(row) as ct
+        FROM toolbox_excel_data
+        WHERE excel_id = 15 AND (col = 5) AND data != ''
+        GROUP BY excel_id, col, data
+        HAVING COUNT(row) > 1 
+        ORDER BY excel_id, row, col 
+        ) x, toolbox_excel_data y
+    WHERE y.excel_id = 15 AND x.row < y.row AND (y.col = 5) AND x.data = y.data
+    ORDER BY x.row, x.col
  ) m2
  WHERE m1.xrow = m2.xrow and m1.yrow = m2.yrow
 
@@ -164,36 +164,36 @@
 
 
 
-	 SELECT m1.excel_id as m1_excel_id, m1.row as m1_row, m1.col as m1_col, m1.data as m1_data, 
-	 	m2.excel_id as m2_excel_id, m2.row as m2_row, m2.col as m2_col, m2.data as m2_data 
-	 FROM 
-	 (
-	 	SELECT y.excel_id, x.row, x.col, x.data, x.ct, y.row, y.col, y.data
-		FROM (
-			SELECT excel_id, row, col, data, COUNT(row) as ct
-			FROM toolbox_excel_data
-			WHERE excel_id = 15 AND (col = 4 OR col = 5) AND data != ''
-			GROUP BY excel_id, col, data
-			HAVING COUNT(row) > 1 
-			ORDER BY excel_id, row, col 
-			) x, toolbox_excel_data y
-		WHERE y.excel_id = 15 AND x.row < y.row AND (y.col = 4 OR y.col = 5) AND x.data = y.data
-		ORDER BY x.row, x.col
-	) m1,
-	(
-	 	SELECT y.excel_id, y.row, y.col, y.data
-		FROM (
-			SELECT excel_id, row, col, data, COUNT(row) as ct
-			FROM toolbox_excel_data
-			WHERE excel_id = 14 AND (col = 4 OR col = 5) AND data != ''
-			GROUP BY excel_id, col, data
-			HAVING COUNT(row) > 1 
-			ORDER BY excel_id, row, col 
-			) x, toolbox_excel_data y
-		WHERE y.excel_id = 14 AND x.row < y.row AND x.col = y.col AND x.data = y.data
-	) m2
-	WHERE m1.row = m2.row
-	ORDER BY m1.data
+     SELECT m1.excel_id as m1_excel_id, m1.row as m1_row, m1.col as m1_col, m1.data as m1_data, 
+        m2.excel_id as m2_excel_id, m2.row as m2_row, m2.col as m2_col, m2.data as m2_data 
+     FROM 
+     (
+        SELECT y.excel_id, x.row, x.col, x.data, x.ct, y.row, y.col, y.data
+        FROM (
+            SELECT excel_id, row, col, data, COUNT(row) as ct
+            FROM toolbox_excel_data
+            WHERE excel_id = 15 AND (col = 4 OR col = 5) AND data != ''
+            GROUP BY excel_id, col, data
+            HAVING COUNT(row) > 1 
+            ORDER BY excel_id, row, col 
+            ) x, toolbox_excel_data y
+        WHERE y.excel_id = 15 AND x.row < y.row AND (y.col = 4 OR y.col = 5) AND x.data = y.data
+        ORDER BY x.row, x.col
+    ) m1,
+    (
+        SELECT y.excel_id, y.row, y.col, y.data
+        FROM (
+            SELECT excel_id, row, col, data, COUNT(row) as ct
+            FROM toolbox_excel_data
+            WHERE excel_id = 14 AND (col = 4 OR col = 5) AND data != ''
+            GROUP BY excel_id, col, data
+            HAVING COUNT(row) > 1 
+            ORDER BY excel_id, row, col 
+            ) x, toolbox_excel_data y
+        WHERE y.excel_id = 14 AND x.row < y.row AND x.col = y.col AND x.data = y.data
+    ) m2
+    WHERE m1.row = m2.row
+    ORDER BY m1.data
 
 
 
@@ -205,10 +205,10 @@
  SELECT *
  FROM toolbox_excel_data m1
  WHERE EXISTS (
-	SELECT 1
-	FROM toolbox_excel_data m2
-	WHERE m1.excel_id = 12 AND m1.excel_id = m2.excel_id AND m1.data = m2.data AND m1.row != m2.row AND m1.col = 19 AND m2.col = 19
- 	)
+    SELECT 1
+    FROM toolbox_excel_data m2
+    WHERE m1.excel_id = 12 AND m1.excel_id = m2.excel_id AND m1.data = m2.data AND m1.row != m2.row AND m1.col = 19 AND m2.col = 19
+    )
 
 
 SELECT m1_row, m1_col, m1_data, m2_row, m2_col, m2_data

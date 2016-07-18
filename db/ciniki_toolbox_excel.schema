@@ -9,30 +9,30 @@
 #
 # Fields
 # ------
-# id:				The id of the import
-# business_id:		The business the import is being done for.
-# name:				The name for the excel file.
-# source_name:		The uploaded excel file name.
-# cache_name:		The filename within the toolbox/uploads directory.
-# status:			0 - unknown
-#					1 - uploaded
-#					10 - parsed
+# id:               The id of the import
+# business_id:      The business the import is being done for.
+# name:             The name for the excel file.
+# source_name:      The uploaded excel file name.
+# cache_name:       The filename within the toolbox/uploads directory.
+# status:           0 - unknown
+#                   1 - uploaded
+#                   10 - parsed
 # 
-# cur_review_row:	The current row the reviewer is working at.
+# cur_review_row:   The current row the reviewer is working at.
 #
-# date_added:		The date and time the record was added.
-# last_updated:		The date and time the record was last updated.
+# date_added:       The date and time the record was added.
+# last_updated:     The date and time the record was last updated.
 #
 create table ciniki_toolbox_excel (
-	id int not null auto_increment,
-	business_id int not null,
-	name varchar(100) not null,
-	source_name varchar(255) not null,
-	cache_name varchar(255) not null,
-	status tinyint unsigned not null,
-	cur_review_row int not null,
-	date_added datetime not null,
-	last_updated datetime not null,
-	primary key (id),
-	index (business_id)
+    id int not null auto_increment,
+    business_id int not null,
+    name varchar(100) not null,
+    source_name varchar(255) not null,
+    cache_name varchar(255) not null,
+    status tinyint unsigned not null,
+    cur_review_row int not null,
+    date_added datetime not null,
+    last_updated datetime not null,
+    primary key (id),
+    index (business_id)
 ) ENGINE='InnoDB', COMMENT='v1.02';

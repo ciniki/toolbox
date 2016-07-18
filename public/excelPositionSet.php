@@ -6,72 +6,72 @@
 //
 // Info
 // ----
-// Status: 				alpha
+// Status:              alpha
 //
 // Arguments
 // ---------
 // api_key:
 // auth_token:
-// excel_id:			The excel spread ID that was uploaded to ciniki_toolbox_excels table.
-// rows:				A comma delimited list of rows to fetch from the database.
+// excel_id:            The excel spread ID that was uploaded to ciniki_toolbox_excels table.
+// rows:                A comma delimited list of rows to fetch from the database.
 // 
 // Returns
 // -------
 // <rows>
-// 		<row id="44">
-//			<cells>
-//				<cell row="44" col="1" data="Firstname" />
-//				<cell row="44" col="2" data="Middlename" />
-//				<cell row="44" col="3" data="Lastname" />
-//				<cell row="44" col="4" data="Suffix" />
-//			</cells>
-//		</row>
+//      <row id="44">
+//          <cells>
+//              <cell row="44" col="1" data="Firstname" />
+//              <cell row="44" col="2" data="Middlename" />
+//              <cell row="44" col="3" data="Lastname" />
+//              <cell row="44" col="4" data="Suffix" />
+//          </cells>
+//      </row>
 // </rows>
 //
 function ciniki_toolbox_excelPositionSet($ciniki) {
-	//
-	// Find all the required and optional arguments
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
-	$rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-		'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
-		'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Spreadsheet'), 
-		'row'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Row'), 
-		));
-	if( $rc['stat'] != 'ok' ) {
-		return $rc;
-	}
-	$args = $rc['args'];
-	
-	//
-	// Check access to business_id
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'toolbox', 'private', 'checkAccess');
-	$ac = ciniki_toolbox_checkAccess($ciniki, $args['business_id'], 'ciniki.toolbox.excelPositionSet', $args['excel_id']);
-	if( $ac['stat'] != 'ok' ) {
-		return $ac;
-	}
+    //
+    // Find all the required and optional arguments
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
+    $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
+        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Spreadsheet'), 
+        'row'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Row'), 
+        ));
+    if( $rc['stat'] != 'ok' ) {
+        return $rc;
+    }
+    $args = $rc['args'];
+    
+    //
+    // Check access to business_id
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'toolbox', 'private', 'checkAccess');
+    $ac = ciniki_toolbox_checkAccess($ciniki, $args['business_id'], 'ciniki.toolbox.excelPositionSet', $args['excel_id']);
+    if( $ac['stat'] != 'ok' ) {
+        return $ac;
+    }
 
-	//
-	// Update the current position
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
-	$strsql = "UPDATE ciniki_toolbox_excel SET cur_review_row = '" . $args['row'] . "' "
-		. "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
-		. "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' ";
-	$rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.toolbox');
-	if( $rc['stat'] != 'ok' ) {
-		ciniki_core_dbTransactionRollback($ciniki, 'ciniki.toolbox');
-		return $rc;
-	}
-	
-	//
-	// Update the last_change date in the business modules
-	// Ignore the result, as we don't want to stop user updates if this fails.
-	//
-	ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
-	ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'toolbox');
+    //
+    // Update the current position
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
+    $strsql = "UPDATE ciniki_toolbox_excel SET cur_review_row = '" . $args['row'] . "' "
+        . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
+        . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' ";
+    $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.toolbox');
+    if( $rc['stat'] != 'ok' ) {
+        ciniki_core_dbTransactionRollback($ciniki, 'ciniki.toolbox');
+        return $rc;
+    }
+    
+    //
+    // Update the last_change date in the business modules
+    // Ignore the result, as we don't want to stop user updates if this fails.
+    //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
+    ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'toolbox');
 
-	return array('stat'=>'ok');
+    return array('stat'=>'ok');
 }
 ?>
