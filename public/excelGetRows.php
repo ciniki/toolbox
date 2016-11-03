@@ -68,7 +68,7 @@ function ciniki_toolbox_excelGetRows($ciniki) {
         return $rc;
     }
     if( !isset($rc['excel']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'101', 'msg'=>'A valid excel_id must be specified'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.15', 'msg'=>'A valid excel_id must be specified'));
     }
     $excel = $rc['excel'];
 
@@ -81,7 +81,7 @@ function ciniki_toolbox_excelGetRows($ciniki) {
         . " ORDER BY row, col ";
     $rc = ciniki_core_dbHashIDQuery2($ciniki, $strsql, 'ciniki.toolbox', 'rows', 'row', 'cells', 'cell');
     if( $rc['stat'] != 'ok' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'104', 'msg'=>'A valid excel_id must be specified', 'err'=>$rc['err']));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.16', 'msg'=>'A valid excel_id must be specified', 'err'=>$rc['err']));
     }
     $rows = $rc['rows'];
     

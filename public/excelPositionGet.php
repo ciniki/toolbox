@@ -65,6 +65,6 @@ function ciniki_toolbox_excelPositionGet($ciniki) {
         return array('stat'=>'ok', 'cur_review_row'=>$rc['file']['cur_review_row']);
     }
     
-    return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'407', 'msg'=>'Unable to get last position'));
+    return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.18', 'msg'=>'Unable to get last position'));
 }
 ?>

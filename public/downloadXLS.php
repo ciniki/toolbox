@@ -54,7 +54,7 @@ function ciniki_toolbox_downloadXLS($ciniki) {
         return $rc;
     }
     if( !isset($rc['excel']) ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'117', 'msg'=>'A valid excel_id must be specified'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.13', 'msg'=>'A valid excel_id must be specified'));
     }
     $excel = $rc['excel'];
 

@@ -106,7 +106,7 @@ function ciniki_toolbox_uploadXLSParse($ciniki) {
         $numCols = PHPExcel_Cell::columnIndexFromString($highestColumn); 
     } catch(Exception $e) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.toolbox');
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'89', 'msg'=>'Unable to understand spreadsheet data'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.22', 'msg'=>'Unable to understand spreadsheet data'));
     }
 
 

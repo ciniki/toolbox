@@ -55,11 +55,11 @@ function ciniki_toolbox_uploadXLSDelete($ciniki) {
 
 
     if( isset($_FILES['uploadfile']['error']) && $_FILES['uploadfile']['error'] == UPLOAD_ERR_INI_SIZE ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'92', 'msg'=>'Upload failed, file too large.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.1', 'msg'=>'Upload failed, file too large.'));
     }
 
     if( !isset($_FILES) || !isset($_FILES['uploadfile']) || $_FILES['uploadfile']['name'] == '' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'91', 'msg'=>'Upload failed, no file specified.', '_FILES'=>$_FILES));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.2', 'msg'=>'Upload failed, no file specified.', '_FILES'=>$_FILES));
     }
 
     if( $args['name'] == '' ) {
@@ -150,7 +150,7 @@ function ciniki_toolbox_uploadXLSDelete($ciniki) {
         $numCols = PHPExcel_Cell::columnIndexFromString($highestColumn); 
     } catch(Exception $e) {
         ciniki_core_dbTransactionRollback($ciniki, 'toolbox');
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'94', 'msg'=>'Unable to understand spreadsheet data'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.3', 'msg'=>'Unable to understand spreadsheet data'));
     }
 
 

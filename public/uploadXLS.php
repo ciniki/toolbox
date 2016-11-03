@@ -51,11 +51,11 @@ function ciniki_toolbox_uploadXLS($ciniki) {
 
 
     if( isset($_FILES['uploadfile']['error']) && $_FILES['uploadfile']['error'] == UPLOAD_ERR_INI_SIZE ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'88', 'msg'=>'Upload failed, file too large.'));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.20', 'msg'=>'Upload failed, file too large.'));
     }
 
     if( !isset($_FILES) || !isset($_FILES['uploadfile']) || $_FILES['uploadfile']['name'] == '' ) {
-        return array('stat'=>'fail', 'err'=>array('pkg'=>'ciniki', 'code'=>'87', 'msg'=>'Upload failed, no file specified.', '_FILES'=>$_FILES));
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.21', 'msg'=>'Upload failed, no file specified.', '_FILES'=>$_FILES));
     }
 
     if( $args['name'] == '' ) {
