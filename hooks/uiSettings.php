@@ -32,7 +32,7 @@ function ciniki_toolbox_hooks_uiSettings($ciniki, $business_id, $args) {
         $menu_item = array(
             'priority'=>2300,
             'label'=>'Toolbox', 
-            'edit'=>array('app'=>'ciniki.toolbox.main'),
+            'edit'=>array('app'=>'ciniki.toolbox.excel'),
             );
         $rsp['menu_items'][] = $menu_item;
     } 
