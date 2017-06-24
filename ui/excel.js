@@ -11,6 +11,7 @@ function ciniki_toolbox_excel() {
     this.file = null;
     this.review = null;
     this.matches = null;
+    this.last_row = 0;
 
     this.cb = null;
 
@@ -252,7 +253,11 @@ function ciniki_toolbox_excel() {
                     return false;
                 } 
                 if( rsp.id > 0 ) {
-                    M.ciniki_toolbox_excel.parseFile(rsp.id, 1);
+                    this.excel_id = rsp.id;
+                    this.last_row = 1;
+////        console.log('sleep');
+                    M.startLoad();
+                    setTimeout(M.ciniki_toolbox_excel.parseFile, 10000);
                 } else {
                     M.ciniki_toolbox_excel.showFiles();
                 }
@@ -265,17 +270,22 @@ function ciniki_toolbox_excel() {
     // Parse uploaded excel spreadsheet
     //
     this.parseFile = function(id, start) {
+//        console.log('run');
         var rsp = M.api.getJSONCb('ciniki.toolbox.uploadXLSParse', 
-            {'business_id':M.curBusinessID, 'excel_id':id, 'start':start, 'size':1000},
+            {'business_id':M.curBusinessID, 'excel_id':this.excel_id, 'start':this.last_row, 'size':100000},
             function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
                 }
                 if( rsp.last_row > 0 && rsp.count >= 1000 ) {
-                    M.ciniki_toolbox_excel.parseFile(rsp.id, rsp.last_row+1);
+                    this.last_row = rsp.last_row+1;
+//        console.log('sleep');
+                    setTimeout(M.ciniki_toolbox_excel.parseFile, 10000);
+                    //M.ciniki_toolbox_excel.parseFile(rsp.id, rsp.last_row+1);
                 } else {
                     M.ciniki_toolbox_excel.finishParse(rsp.id);
+                    M.startLoad();
                 }
             });
     }

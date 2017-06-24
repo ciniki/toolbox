@@ -46,7 +46,7 @@ function ciniki_toolbox_uploadXLS($ciniki) {
     //
     // Setup memory limits to be able to process large files
     //
-    ini_set("upload_max_filesize", "50M");
+//    ini_set("upload_max_filesize", "50M");
     ini_set('memory_limit', '4096M');
 
 
@@ -67,12 +67,15 @@ function ciniki_toolbox_uploadXLS($ciniki) {
     // Open Excel parsing library
     //
     require($ciniki['config']['core']['lib_dir'] . '/PHPExcel/PHPExcel.php');
-    $inputFileType = 'Excel5';
+//    $inputFileType = 'Excel5';
     $inputFileName = $_FILES['uploadfile']['tmp_name'];
+    $inputFileType = PHPExcel_IOFactory::identify($inputFileName);
 
     //
     // Turn off autocommit
     //
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionStart');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionRollback');
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbTransactionCommit');
@@ -89,7 +92,6 @@ function ciniki_toolbox_uploadXLS($ciniki) {
         . ", '" . ciniki_core_dbQuote($ciniki, $args['name']) . "' "
         . ", '" . ciniki_core_dbQuote($ciniki, $_FILES['uploadfile']['name']) . "' "
         . ", UTC_TIMESTAMP(), UTC_TIMESTAMP())";
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbInsert');
     $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.toolbox');
     if( $rc['stat'] != 'ok' ) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.toolbox');
@@ -113,13 +115,103 @@ function ciniki_toolbox_uploadXLS($ciniki) {
     $strsql = "UPDATE ciniki_toolbox_excel SET status = 1, cache_name = '" . ciniki_core_dbQuote($ciniki, "excel_" . $excel_id) . "' "
         . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
         . "AND id = '" . ciniki_core_dbQuote($ciniki, $excel_id) . "' ";
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
     $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.toolbox');
     if( $rc['stat'] != 'ok' ) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.toolbox');
         return $rc;
     }
 
+    //
+    // Setup memory limits to be able to process large files
+    //
+/*
+    $args['start'] = 1;
+    $args['size'] = 10000;
+//    error_log("Parsing chunk: " . $args['start'] . ' - ' . $args['size']);
+    //
+    // Open Excel parsing library
+    //
+//    $inputFileName = $ciniki['config']['core']['modules_dir'] . '/toolbox/uploads/excel_' . $args['excel_id'] . '.xls';
+    $inputFileName = $filename;
+//    $inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+
+    //  Define a Read Filter class implementing PHPExcel_Reader_IReadFilter  
+    try {
+        class MyReadFilter implements PHPExcel_Reader_IReadFilter 
+        { 
+            // Defaults for start and size
+            public $_start = 1;
+            public $_size = 1000;
+            public function readCell($column, $row, $worksheetName = '') { 
+                if( $row >= $this->_start && $row < ($this->_start + $this->_size)) {
+                    return true;
+                }
+                return false; 
+            } 
+        } 
+        //  Create an Instance of our Read Filter  
+        $filterSubset = new MyReadFilter(); 
+        $filterSubset->_start = $args['start'];
+        $filterSubset->_size = $args['size'];
+
+        // Create a new Reader of the type defined in $inputFileType 
+        $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+        $objReader->setReadFilter($filterSubset); 
+        // Only read in the data, don't care about formatting
+//        $objReader->setReadDataOnly(true);
+        //  Load only the rows and columns that match our filter from $inputFileName to a PHPExcel Object 
+        $objPHPExcel = $objReader->load($inputFileName);
+
+        $objWorksheet = $objPHPExcel->getActiveSheet();
+        $numRows = $objWorksheet->getHighestRow(); // e.g. 10
+        $highestColumn = $objWorksheet->getHighestColumn(); // e.g 'F'
+        $numCols = PHPExcel_Cell::columnIndexFromString($highestColumn); 
+    } catch(Exception $e) {
+        ciniki_core_dbTransactionRollback($ciniki, 'ciniki.toolbox');
+        return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.22', 'msg'=>'Unable to understand spreadsheet data'));
+    }
+
+
+    //
+    // Parse through the spreadsheet adding all the data
+    //
+    $type = 3;
+    $last_row = 0;
+    $count = 0;
+    for($row = $args['start']; $row <= ($args['start'] + ($args['size']-1)) && $row <= $numRows; $row++) {
+        $data_cols = 0;
+        $strsql = "INSERT INTO ciniki_toolbox_excel_data (excel_id, type, status, row, col, data) VALUES ";
+        for($col = 0; $col < $numCols; $col++) {
+            if( $col > 0 ) {
+                $strsql .= ",";
+            }
+            $cellValue = $objWorksheet->getCellByColumnAndRow($col, $row)->getValue();
+            $strsql .= "("
+                . "'" . ciniki_core_dbQuote($ciniki, $excel_id) . "', "
+                // $type, $row and $col are integers defined in the code
+                . "$type, 1, $row, $col+1, "
+                . "'" . ciniki_core_dbQuote($ciniki, $cellValue) . "' "
+                . ")";
+            if( $cellValue != '' ) {
+                $data_cols++;
+            }
+        }
+
+        //
+        // Only insert rows which have at least one column of data
+        //
+        if( $data_cols > 0 ) {
+            $rc = ciniki_core_dbInsert($ciniki, $strsql, 'ciniki.toolbox');
+            if( $rc['stat'] != 'ok' ) {
+                ciniki_core_dbTransactionRollback($ciniki, 'ciniki.toolbox');
+                return $rc;
+            }
+            unset($rc);
+        }
+        $last_row = $row;
+        $count++;
+    }
+*/
     //
     // Commit the changes
     //
