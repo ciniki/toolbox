@@ -96,7 +96,7 @@ function ciniki_toolbox_uploadXLSParse($ciniki) {
         /**  Tell the Reader that we want to use the Read Filter that we've Instantiated  **/ 
         $objReader->setReadFilter($filterSubset); 
         // Only read in the data, don't care about formatting
-        $objReader->setReadDataOnly(true);
+//        $objReader->setReadDataOnly(true);
         /**  Load only the rows and columns that match our filter from $inputFileName to a PHPExcel Object  **/
         $objPHPExcel = $objReader->load($inputFileName);
 
