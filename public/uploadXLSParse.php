@@ -57,8 +57,8 @@ function ciniki_toolbox_uploadXLSParse($ciniki) {
     // Open Excel parsing library
     //
     require($ciniki['config']['core']['lib_dir'] . '/PHPExcel/PHPExcel.php');
-    $inputFileType = 'Excel5';
     $inputFileName = $ciniki['config']['core']['modules_dir'] . '/toolbox/uploads/excel_' . $args['excel_id'] . '.xls';
+    $inputFileType = PHPExcel_IOFactory::identify($inputFileName);
 
     //
     // Turn off autocommit
