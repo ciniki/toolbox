@@ -284,8 +284,9 @@ function ciniki_toolbox_excel() {
                     setTimeout(M.ciniki_toolbox_excel.parseFile, 10000);
                     //M.ciniki_toolbox_excel.parseFile(rsp.id, rsp.last_row+1);
                 } else {
+//                    console.log('done');
+                    M.stopLoad();
                     M.ciniki_toolbox_excel.finishParse(rsp.id);
-                    M.startLoad();
                 }
             });
     }
