@@ -23,7 +23,7 @@ function ciniki_toolbox_downloadXLS($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Spreadsheet'), 
         'status'=>array('required'=>'no', 'blank'=>'no', 'name'=>'Status'), 
         ));
@@ -33,10 +33,10 @@ function ciniki_toolbox_downloadXLS($ciniki) {
     $args = $rc['args'];
     
     //
-    // Check access to business_id
+    // Check access to tnid
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'toolbox', 'private', 'checkAccess');
-    $ac = ciniki_toolbox_checkAccess($ciniki, $args['business_id'], 'ciniki.toolbox.downloadXLS', $args['excel_id']);
+    $ac = ciniki_toolbox_checkAccess($ciniki, $args['tnid'], 'ciniki.toolbox.downloadXLS', $args['excel_id']);
     if( $ac['stat'] != 'ok' ) {
         return $ac;
     }
@@ -45,10 +45,10 @@ function ciniki_toolbox_downloadXLS($ciniki) {
     // Load the excel information
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbHashQuery');
-    $strsql = "SELECT business_id, name, source_name "
+    $strsql = "SELECT tnid, name, source_name "
         . "FROM ciniki_toolbox_excel "
         . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
-        . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' ";
+        . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' ";
     $rc = ciniki_core_dbHashQuery($ciniki, $strsql, 'ciniki.toolbox', 'excel');
     if( $rc['stat'] != 'ok' ) {
         return $rc;

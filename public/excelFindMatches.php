@@ -24,7 +24,7 @@ function ciniki_toolbox_excelFindMatches($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Spreadsheet'), 
         'columns'=>array('required'=>'yes', 'type'=>'idlist', 'blank'=>'no', 'name'=>'Row'), 
         'match_blank'=>array('required'=>'no', 'default'=>'no', 'blank'=>'no', 'name'=>'Match Blank Records'), 
@@ -35,11 +35,11 @@ function ciniki_toolbox_excelFindMatches($ciniki) {
     $args = $rc['args'];
     
     //
-    // Check access to business_id, the toolbox module is turned on, the user has access, 
-    // and the excel_id belongs to the business.
+    // Check access to tnid, the toolbox module is turned on, the user has access, 
+    // and the excel_id belongs to the tenant.
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'toolbox', 'private', 'checkAccess');
-    $ac = ciniki_toolbox_checkAccess($ciniki, $args['business_id'], 'ciniki.toolbox.excelFindMatches', $args['excel_id']);
+    $ac = ciniki_toolbox_checkAccess($ciniki, $args['tnid'], 'ciniki.toolbox.excelFindMatches', $args['excel_id']);
     if( $ac['stat'] != 'ok' ) {
         return $ac;
     }
@@ -230,11 +230,11 @@ function ciniki_toolbox_excelFindMatches($ciniki) {
     }
 
     //
-    // Update the last_change date in the business modules
+    // Update the last_change date in the tenant modules
     // Ignore the result, as we don't want to stop user updates if this fails.
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
-    ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'toolbox');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'updateModuleChangeDate');
+    ciniki_tenants_updateModuleChangeDate($ciniki, $args['tnid'], 'ciniki', 'toolbox');
 
     return array('stat'=>'ok', 'matches'=>$num_matches, 'duplicates'=>$num_dups);
 }

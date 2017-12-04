@@ -226,7 +226,7 @@ function ciniki_toolbox_excel() {
     //
     this.showFiles = function(cb) {
         var rsp = M.api.getJSONCb('ciniki.toolbox.excelGetList', 
-            {'business_id':M.curBusinessID}, function(rsp) {
+            {'tnid':M.curTenantID}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -246,7 +246,7 @@ function ciniki_toolbox_excel() {
         var file = document.getElementById(M.ciniki_toolbox_excel.upload.panelUID + '_excel');
         var name = document.getElementById(M.ciniki_toolbox_excel.upload.panelUID + '_name');
         var rsp = M.api.postJSONFile('ciniki.toolbox.uploadXLS', 
-            {'business_id':M.curBusinessID, 'name':name.value}, file.files[0], 
+            {'tnid':M.curTenantID, 'name':name.value}, file.files[0], 
             function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
@@ -272,7 +272,7 @@ function ciniki_toolbox_excel() {
     this.parseFile = function(id, start) {
 //        console.log('run');
         var rsp = M.api.getJSONCb('ciniki.toolbox.uploadXLSParse', 
-            {'business_id':M.curBusinessID, 'excel_id':this.excel_id, 'start':this.last_row, 'size':100000},
+            {'tnid':M.curTenantID, 'excel_id':this.excel_id, 'start':this.last_row, 'size':100000},
             function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
@@ -293,7 +293,7 @@ function ciniki_toolbox_excel() {
 
     this.finishParse = function(id) {
         var rsp = M.api.getJSONCb('ciniki.toolbox.uploadXLSDone', 
-            {'business_id':M.curBusinessID, 'excel_id':id}, function(rsp) {
+            {'tnid':M.curTenantID, 'excel_id':id}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -308,19 +308,19 @@ function ciniki_toolbox_excel() {
     this.downloadFile = function(s, l) {
         if( s != null && s > 0 ) {
             M.api.openFile('ciniki.toolbox.download2XLS', 
-                {'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'status':s});
+                {'tnid':M.curTenantID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'status':s});
         } else if( l != null && l != '' ) {
             M.api.openFile('ciniki.toolbox.download2XLS', 
-                {'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'status_list':l});
+                {'tnid':M.curTenantID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'status_list':l});
         } else {
             M.api.openFile('ciniki.toolbox.download2XLS', 
-                {'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id});
+                {'tnid':M.curTenantID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id});
         }
     }
 
     this.downloadCSVFile = function(deleted) {
         M.api.openFile('ciniki.toolbox.downloadCSV', 
-            {'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'deleted':deleted});
+            {'tnid':M.curTenantID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'deleted':deleted});
     }
     
     //
@@ -337,7 +337,7 @@ function ciniki_toolbox_excel() {
             this.file.excel_id = fid;
         }
         var rsp = M.api.getJSONCb('ciniki.toolbox.excelGetStats', 
-            {'business_id':M.curBusinessID, 'excel_id':this.file.excel_id}, function(rsp) {
+            {'tnid':M.curTenantID, 'excel_id':this.file.excel_id}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -354,7 +354,7 @@ function ciniki_toolbox_excel() {
     // 
     this.showMatch = function(i) {
         var rsp = M.api.getJSONCb('ciniki.toolbox.excelNextMatch', 
-            {'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'last_row':i}, function(rsp) {
+            {'tnid':M.curTenantID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'last_row':i}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -371,7 +371,7 @@ function ciniki_toolbox_excel() {
     //
     this.findMatches = function() {
         var rsp = M.api.getJSONCb('ciniki.toolbox.excelGetRows', 
-            {'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'rows':1}, function(rsp) {
+            {'tnid':M.curTenantID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'rows':1}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -401,7 +401,7 @@ function ciniki_toolbox_excel() {
                 c = ',';
             }
         }
-        var rsp = M.api.getJSONCb('ciniki.toolbox.excelFindMatches', {'business_id':M.curBusinessID, 
+        var rsp = M.api.getJSONCb('ciniki.toolbox.excelFindMatches', {'tnid':M.curTenantID, 
             'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'columns':columns, 'match_blank':'no'}, function(rsp) { 
                 alert(' Found ' + rsp.matches + ' matches ' + rsp.duplicates + ' duplicate matches'); 
                 M.ciniki_toolbox_excel.showFile();
@@ -420,7 +420,7 @@ function ciniki_toolbox_excel() {
         } else if( advance == 'rewind' ) {
             // Reset the position back to the beginning, if this is a no auto advance review
             var rsp = M.api.getJSONCb('ciniki.toolbox.excelPositionSet', 
-                {'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'row':0}, function(rsp) {
+                {'tnid':M.curTenantID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'row':0}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -435,7 +435,7 @@ function ciniki_toolbox_excel() {
             this.review.autoAdvance = 'no';
             // Get the last position
             var rsp = M.api.getJSONCb('ciniki.toolbox.excelPositionGet', 
-                {'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id}, function(rsp) {
+                {'tnid':M.curTenantID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -449,7 +449,7 @@ function ciniki_toolbox_excel() {
     this.reviewMatchesFinish = function() {
         // Get the header row
         var rsp = M.api.getJSONCb('ciniki.toolbox.excelGetRows', 
-            {'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'rows':'1'}, function(rsp) {
+            {'tnid':M.curTenantID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'rows':'1'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
                     return false;
@@ -466,9 +466,9 @@ function ciniki_toolbox_excel() {
     this.nextMatch = function(direction) {
         var args = {};
         if( this.review.autoAdvance == 'yes' ) {
-            args = {'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'last_row':M.ciniki_toolbox_excel.review.last_row, 'status':'noreview', 'direction':direction};
+            args = {'tnid':M.curTenantID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'last_row':M.ciniki_toolbox_excel.review.last_row, 'status':'noreview', 'direction':direction};
         } else {
-            args = {'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'last_row':M.ciniki_toolbox_excel.review.last_row, 'status':'any', 'direction':direction};
+            args = {'tnid':M.curTenantID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'last_row':M.ciniki_toolbox_excel.review.last_row, 'status':'any', 'direction':direction};
         }
         var rsp = M.api.getJSONCb('ciniki.toolbox.excelNextMatch', args, function(rsp) {
             if( rsp.stat != 'ok' && rsp.err.code == '96' ) {
@@ -492,7 +492,7 @@ function ciniki_toolbox_excel() {
             M.ciniki_toolbox_excel.review.rows = rsp.rows;
 
             // Set the last position
-            var rsp = M.api.getJSONCb('ciniki.toolbox.excelPositionSet', {'business_id':M.curBusinessID, 
+            var rsp = M.api.getJSONCb('ciniki.toolbox.excelPositionSet', {'tnid':M.curTenantID, 
                 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'row':M.ciniki_toolbox_excel.review.last_row}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -506,7 +506,7 @@ function ciniki_toolbox_excel() {
 
     this.deleteRow = function(row) {
         if( this.review.autoAdvance == 'yes' ) {
-            var rsp = M.api.getJSONCb('ciniki.toolbox.excelDeleteMatchRow', {'business_id':M.curBusinessID, 
+            var rsp = M.api.getJSONCb('ciniki.toolbox.excelDeleteMatchRow', {'tnid':M.curTenantID, 
                 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'row':row}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -516,7 +516,7 @@ function ciniki_toolbox_excel() {
                     M.ciniki_toolbox_excel.nextMatch('fwd');
                 });
         } else {
-            var rsp = M.api.getJSONCb('ciniki.toolbox.excelSetRowStatus', {'business_id':M.curBusinessID, 
+            var rsp = M.api.getJSONCb('ciniki.toolbox.excelSetRowStatus', {'tnid':M.curTenantID, 
                 'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'row':row, 'status':'delete'}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -529,7 +529,7 @@ function ciniki_toolbox_excel() {
     }
 
     this.keepRow = function(row) {
-        var rsp = M.api.getJSONCb('ciniki.toolbox.excelSetRowStatus', {'business_id':M.curBusinessID, 
+        var rsp = M.api.getJSONCb('ciniki.toolbox.excelSetRowStatus', {'tnid':M.curTenantID, 
             'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'row':row, 'status':'keep'}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
@@ -541,7 +541,7 @@ function ciniki_toolbox_excel() {
     }
 
     this.deleteMatchesOnRows = function(row1, row2) {
-        var rsp = M.api.getJSONCb('ciniki.toolbox.excelDeleteMatchesOnRows', {'business_id':M.curBusinessID, 
+        var rsp = M.api.getJSONCb('ciniki.toolbox.excelDeleteMatchesOnRows', {'tnid':M.curTenantID, 
             'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'row1':row1, 'row2':row2}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
                     M.api.err(rsp);
@@ -553,7 +553,7 @@ function ciniki_toolbox_excel() {
     }
 
     this.updateCell = function(s, r, c, d) {
-        var rsp = M.api.getJSONCb('ciniki.toolbox.excelUpdateCell', {'business_id':M.curBusinessID, 
+        var rsp = M.api.getJSONCb('ciniki.toolbox.excelUpdateCell', {'tnid':M.curTenantID, 
             'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'row':M.ciniki_toolbox_excel.review.rows[(c-1)].row.id, 
             'col':M.ciniki_toolbox_excel.review.rows[(c-1)].row.cells[r].cell.col, 'data':encodeURIComponent(d)}, function(rsp) {
                 if( rsp.stat != 'ok' ) {
@@ -571,7 +571,7 @@ function ciniki_toolbox_excel() {
     this.resetFile = function() {
         if( confirm("Are you sure you want to reset this file?") == true ) {
             var rsp = M.api.getJSONCb('ciniki.toolbox.excelReset', 
-                {'business_id':M.curBusinessID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id}, function(rsp) {
+                {'tnid':M.curTenantID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
                         return false;
@@ -588,7 +588,7 @@ function ciniki_toolbox_excel() {
     //
     this.deleteFile = function() {
         if( confirm("Are you sure you want to delete this file?") == true ) {
-            var rsp = M.api.getJSONCb('ciniki.toolbox.excelDelete', {'business_id':M.curBusinessID, 
+            var rsp = M.api.getJSONCb('ciniki.toolbox.excelDelete', {'tnid':M.curTenantID, 
                 'excel_id':M.ciniki_toolbox_excel.file.excel_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);

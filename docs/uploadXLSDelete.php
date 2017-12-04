@@ -13,7 +13,7 @@
 // ---------
 // api_key:
 // auth_token:      
-// business_id:         The business ID to create the excel file for.
+// tnid:         The tenant ID to create the excel file for.
 // upload_id:           The information about the file uploaded via a file form field.
 // start:               The starting row, 1 or greater.
 // size:                The number of records to process, starting with the start row.
@@ -28,7 +28,7 @@ function ciniki_toolbox_uploadXLSDelete($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No business specified'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No tenant specified'), 
         'upload_id'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No upload specified'), 
         'start'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No start specified'), 
         'size'=>array('required'=>'yes', 'blank'=>'no', 'errmsg'=>'No size specified'), 
@@ -39,10 +39,10 @@ function ciniki_toolbox_uploadXLSDelete($ciniki) {
     $args = $rc['args'];
 
     //
-    // Check access to business_id
+    // Check access to tnid
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'toolbox', 'private', 'checkAccess');
-    $ac = ciniki_toolbox_checkAccess($ciniki, $args['business_id'], 'ciniki.toolbox.uploadXLSDelete', 0);
+    $ac = ciniki_toolbox_checkAccess($ciniki, $args['tnid'], 'ciniki.toolbox.uploadXLSDelete', 0);
     if( $ac['stat'] != 'ok' ) {
         return $ac;
     }
@@ -101,8 +101,8 @@ function ciniki_toolbox_uploadXLSDelete($ciniki) {
     //
     // Create a new upload entry in the database
     //
-    $strsql = "INSERT INTO ciniki_toolbox_excel (business_id, name, source_name, date_added, last_updated) VALUES ("
-        . "'" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+    $strsql = "INSERT INTO ciniki_toolbox_excel (tnid, name, source_name, date_added, last_updated) VALUES ("
+        . "'" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . ", '" . ciniki_core_dbQuote($ciniki, $args['name']) . "' "
         . ", '" . ciniki_core_dbQuote($ciniki, $_FILES['uploadfile']['name']) . "' "
         . ", UTC_TIMESTAMP(), UTC_TIMESTAMP())";

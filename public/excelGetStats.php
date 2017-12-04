@@ -12,7 +12,7 @@
 // ---------
 // api_key:
 // auth_token:      
-// business_id:         The business ID the excel file is connected to.
+// tnid:         The tenant ID the excel file is connected to.
 // excel_id:            The excel ID from the table ciniki_toolbox_excel.
 //
 // Returns
@@ -25,7 +25,7 @@ function ciniki_toolbox_excelGetStats($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Spreadsheet'), 
         ));
     if( $rc['stat'] != 'ok' ) {
@@ -34,10 +34,10 @@ function ciniki_toolbox_excelGetStats($ciniki) {
     $args = $rc['args'];
     
     //
-    // Check access to business_id
+    // Check access to tnid
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'toolbox', 'private', 'checkAccess');
-    $ac = ciniki_toolbox_checkAccess($ciniki, $args['business_id'], 'ciniki.toolbox.excelGetStats', $args['excel_id']);
+    $ac = ciniki_toolbox_checkAccess($ciniki, $args['tnid'], 'ciniki.toolbox.excelGetStats', $args['excel_id']);
     if( $ac['stat'] != 'ok' ) {
         return $ac;
     }

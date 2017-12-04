@@ -40,7 +40,7 @@ function ciniki_toolbox_excelNextMatch($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Spreadsheet'), 
         'last_row'=>array('required'=>'no', 'default'=>'0', 'blank'=>'no', 'name'=>'Last Row'), 
         'status'=>array('required'=>'no', 'default'=>'', 'blank'=>'Yes', 'name'=>'Status'),
@@ -52,10 +52,10 @@ function ciniki_toolbox_excelNextMatch($ciniki) {
     $args = $rc['args'];
     
     //
-    // Check access to business_id
+    // Check access to tnid
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'toolbox', 'private', 'checkAccess');
-    $ac = ciniki_toolbox_checkAccess($ciniki, $args['business_id'], 'ciniki.toolbox.excelNextMatch', $args['excel_id']);
+    $ac = ciniki_toolbox_checkAccess($ciniki, $args['tnid'], 'ciniki.toolbox.excelNextMatch', $args['excel_id']);
     if( $ac['stat'] != 'ok' ) {
         return $ac;
     }

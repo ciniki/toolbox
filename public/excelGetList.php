@@ -12,7 +12,7 @@
 // ---------
 // api_key:
 // auth_token:
-// business_id:         The business ID to get the excel files uploaded to the toolbox.
+// tnid:         The tenant ID to get the excel files uploaded to the toolbox.
 // 
 // Returns
 // -------
@@ -26,7 +26,7 @@ function ciniki_toolbox_excelGetList($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         ));
     if( $rc['stat'] != 'ok' ) {
         return $rc;
@@ -34,10 +34,10 @@ function ciniki_toolbox_excelGetList($ciniki) {
     $args = $rc['args'];
     
     //
-    // Check access to business_id
+    // Check access to tnid
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'toolbox', 'private', 'checkAccess');
-    $ac = ciniki_toolbox_checkAccess($ciniki, $args['business_id'], 'ciniki.toolbox.excelGetList', 0);
+    $ac = ciniki_toolbox_checkAccess($ciniki, $args['tnid'], 'ciniki.toolbox.excelGetList', 0);
     if( $ac['stat'] != 'ok' ) {
         return $ac;
     }
@@ -58,7 +58,7 @@ function ciniki_toolbox_excelGetList($ciniki) {
     $strsql = "SELECT id, name, source_name, cur_review_row, "
         . "DATE_FORMAT(CONVERT_TZ(date_added, '+00:00', '" . ciniki_core_dbQuote($ciniki, $utc_offset) . "'), '" . ciniki_core_dbQuote($ciniki, $datetime_format) . "') AS date_added "
         . "FROM ciniki_toolbox_excel "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' "
         . "AND status = 10 ";
     return ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.toolbox', 'files', 'excel', array('stat'=>'ok', 'files'=>array()));
 }

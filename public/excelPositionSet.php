@@ -34,7 +34,7 @@ function ciniki_toolbox_excelPositionSet($ciniki) {
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'prepareArgs');
     $rc = ciniki_core_prepareArgs($ciniki, 'no', array(
-        'business_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Business'), 
+        'tnid'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Tenant'), 
         'excel_id'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Spreadsheet'), 
         'row'=>array('required'=>'yes', 'blank'=>'no', 'name'=>'Row'), 
         ));
@@ -44,10 +44,10 @@ function ciniki_toolbox_excelPositionSet($ciniki) {
     $args = $rc['args'];
     
     //
-    // Check access to business_id
+    // Check access to tnid
     //
     ciniki_core_loadMethod($ciniki, 'ciniki', 'toolbox', 'private', 'checkAccess');
-    $ac = ciniki_toolbox_checkAccess($ciniki, $args['business_id'], 'ciniki.toolbox.excelPositionSet', $args['excel_id']);
+    $ac = ciniki_toolbox_checkAccess($ciniki, $args['tnid'], 'ciniki.toolbox.excelPositionSet', $args['excel_id']);
     if( $ac['stat'] != 'ok' ) {
         return $ac;
     }
@@ -58,7 +58,7 @@ function ciniki_toolbox_excelPositionSet($ciniki) {
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbUpdate');
     $strsql = "UPDATE ciniki_toolbox_excel SET cur_review_row = '" . $args['row'] . "' "
         . "WHERE id = '" . ciniki_core_dbQuote($ciniki, $args['excel_id']) . "' "
-        . "AND business_id = '" . ciniki_core_dbQuote($ciniki, $args['business_id']) . "' ";
+        . "AND tnid = '" . ciniki_core_dbQuote($ciniki, $args['tnid']) . "' ";
     $rc = ciniki_core_dbUpdate($ciniki, $strsql, 'ciniki.toolbox');
     if( $rc['stat'] != 'ok' ) {
         ciniki_core_dbTransactionRollback($ciniki, 'ciniki.toolbox');
@@ -66,11 +66,11 @@ function ciniki_toolbox_excelPositionSet($ciniki) {
     }
     
     //
-    // Update the last_change date in the business modules
+    // Update the last_change date in the tenant modules
     // Ignore the result, as we don't want to stop user updates if this fails.
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'updateModuleChangeDate');
-    ciniki_businesses_updateModuleChangeDate($ciniki, $args['business_id'], 'ciniki', 'toolbox');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'updateModuleChangeDate');
+    ciniki_tenants_updateModuleChangeDate($ciniki, $args['tnid'], 'ciniki', 'toolbox');
 
     return array('stat'=>'ok');
 }

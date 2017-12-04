@@ -18,12 +18,12 @@
 // -------
 // <rsp stat='ok' />
 //
-function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
+function ciniki_toolbox_checkAccess($ciniki, $tnid, $method, $excel_id) {
     //
-    // Check if the business is active and the module is enabled
+    // Check if the tenant is active and the module is enabled
     //
-    ciniki_core_loadMethod($ciniki, 'ciniki', 'businesses', 'private', 'checkModuleAccess');
-    $rc = ciniki_businesses_checkModuleAccess($ciniki, $business_id, 'ciniki', 'toolbox');
+    ciniki_core_loadMethod($ciniki, 'ciniki', 'tenants', 'private', 'checkModuleAccess');
+    $rc = ciniki_tenants_checkModuleAccess($ciniki, $tnid, 'ciniki', 'toolbox');
     if( $rc['stat'] != 'ok' ) {
         return $rc;
     }
@@ -34,7 +34,7 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
     $modules = $rc['modules'];
 
     //
-    // Check the user has permission to the business, 
+    // Check the user has permission to the tenant, 
     // owners have full permissions, as do sysadmins
     //
     // Check if user is superuser
@@ -43,18 +43,18 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
     }
 
     //
-    // Check the authenticated user is the business owner
+    // Check the authenticated user is the tenant owner
     // 
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbQuote');
-    $strsql = "SELECT business_id, user_id FROM ciniki_business_users "
-        . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+    $strsql = "SELECT tnid, user_id FROM ciniki_tenant_users "
+        . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
         . "AND user_id = '" . ciniki_core_dbQuote($ciniki, $ciniki['session']['user']['id']) . "' "
         . "AND package = 'ciniki' "
         . "AND status = 10 "
         . "AND (permission_group = 'owners' OR permission_group = 'employees' OR permission_group = 'resellers' ) "
         . "";
     ciniki_core_loadMethod($ciniki, 'ciniki', 'core', 'private', 'dbRspQuery');
-    $rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.businesses', 'perms', 'perm', array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.5', 'msg'=>'Access denied')));
+    $rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.tenants', 'perms', 'perm', array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.5', 'msg'=>'Access denied')));
     if( $rc['stat'] != 'ok' ) {
         return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.6', 'msg'=>'Access denied', 'err'=>$rc['err']));
     }
@@ -64,11 +64,11 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
 
     //
     // Check if an excel file is specified, that the file is attached
-    // to the requested business_id
+    // to the requested tnid
     //
     if( $excel_id > 0 ) {
-        $strsql = "SELECT id, business_id FROM ciniki_toolbox_excel "
-            . "WHERE business_id = '" . ciniki_core_dbQuote($ciniki, $business_id) . "' "
+        $strsql = "SELECT id, tnid FROM ciniki_toolbox_excel "
+            . "WHERE tnid = '" . ciniki_core_dbQuote($ciniki, $tnid) . "' "
             . "AND id = '" . ciniki_core_dbQuote($ciniki, $excel_id) . "' ";
         $rc = ciniki_core_dbRspQuery($ciniki, $strsql, 'ciniki.toolbox', 'files', 'file', array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.8', 'msg'=>'Access denied')));
         if( $rc['stat'] != 'ok' ) {
@@ -79,7 +79,7 @@ function ciniki_toolbox_checkAccess($ciniki, $business_id, $method, $excel_id) {
         // 1 file was returned.
         //
         if( $rc['num_rows'] != 1 
-            && $rc['files'][0]['file']['business_id'] == $business_id
+            && $rc['files'][0]['file']['tnid'] == $tnid
             && $rc['files'][0]['file']['id'] == $excel_id ) {
             return array('stat'=>'fail', 'err'=>array('code'=>'ciniki.toolbox.10', 'msg'=>'Access denied'));
         }
