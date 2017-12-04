@@ -1,4 +1,4 @@
-This module contains various functions that might be useful to a business, but
+This module contains various functions that might be useful to a tenant, but
 don't as of creation have a need to be their own module.
 
 
