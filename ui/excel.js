@@ -569,8 +569,8 @@ function ciniki_toolbox_excel() {
     // Remove the file from the database
     //
     this.resetFile = function() {
-        if( confirm("Are you sure you want to reset this file?") == true ) {
-            var rsp = M.api.getJSONCb('ciniki.toolbox.excelReset', 
+        M.confirm("Are you sure you want to reset this file?",null,function() {
+            M.api.getJSONCb('ciniki.toolbox.excelReset', 
                 {'tnid':M.curTenantID, 'excel_id':M.ciniki_toolbox_excel.file.excel_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
                         M.api.err(rsp);
@@ -578,9 +578,7 @@ function ciniki_toolbox_excel() {
                     }
                     M.ciniki_toolbox_excel.showFile();
                 });
-        } else {
-            M.ciniki_toolbox_excel.showFile();
-        }
+        });
     }
 
     //
