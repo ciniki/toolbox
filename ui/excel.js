@@ -211,7 +211,7 @@ function ciniki_toolbox_excel() {
         //
         var appContainer = M.createContainer(appPrefix, 'ciniki_toolbox_excel', 'yes');
         if( appContainer == null ) {
-            alert('App Error');
+            M.alert('App Error');
             return false;
         } 
 
@@ -377,7 +377,7 @@ function ciniki_toolbox_excel() {
                     return false;
                 }
                 if( rsp.rows == null || rsp.rows[0] == null || rsp.rows[0].row.columns != null ) {
-                    alert("No rows found");
+                    M.alert("No rows found");
                     return false;
                 }
                 var p = M.ciniki_toolbox_excel.matches;
@@ -403,7 +403,7 @@ function ciniki_toolbox_excel() {
         }
         var rsp = M.api.getJSONCb('ciniki.toolbox.excelFindMatches', {'tnid':M.curTenantID, 
             'excel_id':M.ciniki_toolbox_excel.file.excel_id, 'columns':columns, 'match_blank':'no'}, function(rsp) { 
-                alert(' Found ' + rsp.matches + ' matches ' + rsp.duplicates + ' duplicate matches'); 
+                M.alert(' Found ' + rsp.matches + ' matches ' + rsp.duplicates + ' duplicate matches'); 
                 M.ciniki_toolbox_excel.showFile();
             });
     }
@@ -473,7 +473,7 @@ function ciniki_toolbox_excel() {
         var rsp = M.api.getJSONCb('ciniki.toolbox.excelNextMatch', args, function(rsp) {
             if( rsp.stat != 'ok' && rsp.err.code == '96' ) {
                 if( M.ciniki_toolbox_excel.review.autoAdvance == 'yes' ) {
-                    alert('No more matches found');
+                    M.alert('No more matches found');
                     M.ciniki_toolbox_excel.showFile();
                 }
                 return false;
@@ -587,7 +587,7 @@ function ciniki_toolbox_excel() {
     // Remove the file from the database
     //
     this.deleteFile = function() {
-        if( confirm("Are you sure you want to delete this file?") == true ) {
+        M.confirm("Are you sure you want to delete this file?",null,function() {
             var rsp = M.api.getJSONCb('ciniki.toolbox.excelDelete', {'tnid':M.curTenantID, 
                 'excel_id':M.ciniki_toolbox_excel.file.excel_id}, function(rsp) {
                     if( rsp.stat != 'ok' ) {
@@ -596,6 +596,6 @@ function ciniki_toolbox_excel() {
                     }
                     M.ciniki_toolbox_excel.showFiles();
                 });
-        }
+        });
     }
 }
